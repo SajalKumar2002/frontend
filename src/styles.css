@@ -1,0 +1,17 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.login-screen {
+    background-image: url("../src/svg/hero-image.svg");
+    background-size: cover;
+}
+
+.ai-models {
+    height: 3rem;
+}
+.Brand-logo{
+    height: 4rem;
+}
