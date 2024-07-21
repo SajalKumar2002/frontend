@@ -1,8 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
-import { Form } from 'react-bootstrap';
-import { Button } from 'react-bootstrap';
+import { Form,Button } from 'react-bootstrap';
 
 function LoginForm() {
     const redirect = useNavigate();
@@ -10,7 +9,7 @@ function LoginForm() {
     const HandleSubmit = (event) => {
         event.preventDefault();
         console.log("SUBMIT PRESSED")
-        redirect('/data')
+        redirect('/source')
     }
 
     return (

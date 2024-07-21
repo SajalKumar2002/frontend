@@ -10,8 +10,40 @@
 }
 
 .ai-models {
-    height: 3rem;
+    height: 2rem;
 }
-.Brand-logo{
+
+.Brand-logo {
     height: 4rem;
+}
+
+.bg-inferenceScreen {
+    background-color: #2e3b45;
+}
+
+.bg-history-inferenceScreen {
+    background-color: #1e1f20;
+}
+
+.FileImg {
+    height: 1.5rem;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.fs-custom-jobid{
+    font-size: 0.75rem;
+}
+
+.h-custom{
+    height: calc(100vh - 75px );
+}
+
+.scrollbar-hide::-webkit-scrollbar{
+    display: none;
 }

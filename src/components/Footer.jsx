@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import AImodels from '../svg/AI-Models.svg';
-import { useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
-const Footer = () => {
-    const location = useLocation();
-    const [Float, setFloat] = useState("")
-
-    useEffect(() => {
-        setFloat(location.pathname == '/' ? "end" : "start")
-    }, [location])
+const Footer = ({ Float }) => {
 
     return (
-        <div className='fixed-bottom container'>
-            <img src={AImodels} alt='AI Models' className={`img-fluid ai-models mb-2 float-${Float}`} />
-        </div>
+        <>
+            <Outlet />
+            <div className='p-3 footer'>
+                <img src={AImodels} alt='AI Models' className={`img-fluid ai-models float-${Float}`} />
+            </div>
+        </>
     )
 }
 
-export default Footer
+export default Footer;
