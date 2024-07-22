@@ -32,8 +32,8 @@ const ModelScreen = () => {
             <div className="col-9">
               <Form.Select className='border-dark rounded-pill'>
                 <option value="1">Model 1</option>
-                <option value="2">Model 1</option>
-                <option value="3">Model 1</option>
+                <option value="2">Model 2</option>
+                <option value="3">Model 3</option>
               </Form.Select>
             </div>
 
@@ -70,8 +70,8 @@ const ModelScreen = () => {
                 <Form.Label className='col-7 my-auto'>Select a model for cloning(Optional)</Form.Label>
                 <Form.Select className='col border-dark rounded-pill text-secondary'>
                   <option value="1">Model 1</option>
-                  <option value="2">Model 1</option>
-                  <option value="3">Model 1</option>
+                  <option value="2">Model 2</option>
+                  <option value="3">Model 3</option>
                 </Form.Select>
               </Form.Group>
               <Form.Group className='row mb-1'>

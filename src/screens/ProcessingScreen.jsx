@@ -46,7 +46,7 @@ const ProcessingScreen = () => {
         </div>
       </div>
 
-      <div className="container ms-5 mt-4 w-75">
+      <div className="container ms-5 mt-4 w-75 overflow-auto scrollbar-hide" style={{maxHeight: "25rem"}}>
         <Table striped bordered hover>
           <thead>
             <tr className='text-center'>
