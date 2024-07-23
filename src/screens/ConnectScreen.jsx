@@ -2,18 +2,9 @@ import React from 'react'
 import { Form, Dropdown, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
-import TableConnect from '../components/Table.Connect';
+import TablePreview from '../components/TablePreview.Connect';
 
 const ConnectScreen = () => {
-
-  const SampleTable = [
-    "Table 1",
-    "Table 2",
-    "Table 3",
-    "Table 4",
-    "Table 5",
-    "Table 5",
-  ]
 
   return (
     <div className='container mt-5'>
@@ -26,6 +17,10 @@ const ConnectScreen = () => {
               <Form.Control className='col border-dark rounded-pill' type="text" placeholder="192.168.1.1" />
             </Form.Group>
             <Form.Group className='row mb-1'>
+              <Form.Label className='col-3 my-auto'>Port</Form.Label>
+              <Form.Control className='col border-dark rounded-pill' type="text" placeholder="Port" />
+            </Form.Group>
+            <Form.Group className='row mb-1'>
               <Form.Label className='col-3 my-auto'>Username</Form.Label>
               <Form.Control className='col border-dark rounded-pill' type="text" placeholder="Username" />
             </Form.Group>
@@ -36,7 +31,7 @@ const ConnectScreen = () => {
             <div className='row justify-content-end'>
               <div className="col-9 text-center">
                 <Button variant="info" className='me-2 text-white' type='reset'>Reset</Button>
-                <Button variant="info" className='ms-2 text-white' type='submit'>Submit</Button>
+                <Button variant="info" className='ms-2 text-white' type='submit'>Connect</Button>
               </div>
             </div>
           </Form>
@@ -48,11 +43,19 @@ const ConnectScreen = () => {
             <Form className='container px-5'>
               <Form.Group className='row mb-1'>
                 <Form.Label className='col-3 my-auto'>Choose Database</Form.Label>
-                <Form.Control className='col border-dark rounded-pill' type="text" placeholder="Database" />
+                <Form.Select className='col border-dark rounded-pill'>
+                  <option value="1">Database 1</option>
+                  <option value="2">Database 2</option>
+                  <option value="3">Database 3</option>
+                </Form.Select>
               </Form.Group>
               <Form.Group className='row mb-3'>
                 <Form.Label className='col-3 my-auto'>Choose Table</Form.Label>
-                <Form.Control className='col border-dark rounded-pill' type="password" placeholder="Table" />
+                <Form.Select className='col border-dark rounded-pill'>
+                  <option value="1">Table 1</option>
+                  <option value="2">Table 2</option>
+                  <option value="3">Table 3</option>
+                </Form.Select>
               </Form.Group>
               <div className='row justify-content-end'>
                 <div className="col-9 text-center">
@@ -64,7 +67,7 @@ const ConnectScreen = () => {
           </div>
 
         </div>
-        <TableConnect TableNames={SampleTable} />
+        <TablePreview />
       </div>
     </div>
   )
