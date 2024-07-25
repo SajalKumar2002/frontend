@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 
 import TablePreview from '../components/TablePreview.Connect';
@@ -21,11 +20,6 @@ const CSVConnectScreen = () => {
         multiple: true
     });
 
-    // const files = acceptedFiles.map(file => (
-    //     <li key={file.path} className='list-group item'>
-    //         {file.path} - {file.size} bytes
-    //     </li>
-    // ));
 
     const handleSubmit = () => {
         redirect("/inference");
@@ -35,7 +29,7 @@ const CSVConnectScreen = () => {
         <div className={'container mt-5'}>
             <div className='row'>
                 <div className="col-7 p-2">
-                    <h3 className='mb-4'><span class="text-decoration-underline link-offset-1">Upload XLS/CSV File</span></h3>
+                    <h3 className='mb-4'><span className="text-decoration-underline link-offset-1">Upload XLS/CSV File</span></h3>
 
                     <section className="container">
                         <div {...getRootProps({ className: 'dropzone bg-light fs-5 p-3 border-1 mb-3' })}>

@@ -1,8 +1,13 @@
-import { BrowserRouter as Router } from 'react-router-dom';
-import { Route, Routes } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes
+
+} from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
+
 
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
@@ -16,6 +21,7 @@ import ModelScreen from './screens/ModelScreen';
 import InferenceScreen from './screens/InferenceScreen';
 
 function App() {
+
   return (
     <Router>
       <Routes>

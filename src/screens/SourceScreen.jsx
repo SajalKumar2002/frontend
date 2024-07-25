@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 
 // import SqlConnectScreen from './SqlConnectScreen';
@@ -15,7 +15,6 @@ import Ownmodel from '../svg/OwnModel.svg';
 const SourceScreen = () => {
   const redirect = useNavigate();
   const [selectedValue, setSelectedValue] = useState();
-  const [show, setShow] = useState(false)
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);

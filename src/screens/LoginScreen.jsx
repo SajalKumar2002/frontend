@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import brandlogo from '../svg/Brandlogo.svg';
-import AImodels from '../svg/AI-Models.svg';
 
 import LoginForm from '../components/LoginForm';
 import Footer from '../components/Footer';
