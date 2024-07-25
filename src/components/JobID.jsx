@@ -9,7 +9,7 @@ const JobID = () => {
         <p>Job id: <strong>34234237c54</strong></p>
         <img src={FileIcon} className='FileImg' alt='Document' />
       </div>
-      <p>Model training progess. Please check "Progress" tab for status</p>
+      <p>Model training progess. Please check "Progress" tab for status.</p>
     </>
   )
 }

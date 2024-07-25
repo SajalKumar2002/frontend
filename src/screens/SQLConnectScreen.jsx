@@ -1,13 +1,18 @@
 import React from 'react'
-import { Form, Dropdown, Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Form, Button } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 
 import TablePreview from '../components/TablePreview.Connect';
 
-const ConnectScreen = () => {
+const SQLConnectScreen = () => {
+  const redirect = useNavigate();
+
+  const handleSubmit = () => {
+    redirect("/inference");
+  }
 
   return (
-    <div className='container mt-5'>
+    <div className={'container mt-5'} >
       <div className='row'>
         <div className="col-7 p-2">
           <h3 className='mb-4'><span class="text-decoration-underline link-offset-1">Connect to SQL DB</span></h3>
@@ -60,7 +65,7 @@ const ConnectScreen = () => {
               <div className='row justify-content-end'>
                 <div className="col-9 text-center">
                   <Button variant="info" className='me-2 text-white' type='reset'>Reset</Button>
-                  <Button variant="info" className='ms-2 text-white' type='submit'>Submit</Button>
+                  <Button onClick={handleSubmit} variant="info" className='ms-2 text-white' type='submit'>Submit</Button>
                 </div>
               </div>
             </Form>
@@ -73,4 +78,4 @@ const ConnectScreen = () => {
   )
 }
 
-export default ConnectScreen
+export default SQLConnectScreen

@@ -9,7 +9,7 @@ function LoginForm() {
     const HandleSubmit = (event) => {
         event.preventDefault();
         console.log("SUBMIT PRESSED")
-        redirect('/source')
+        redirect('/data')
     }
 
     return (

@@ -7,9 +7,15 @@ const Footer = ({ Float }) => {
     return (
         <>
             <Outlet />
-            <div className='p-3 footer'>
-                <img src={AImodels} alt='AI Models' className={`img-fluid ai-models float-${Float}`} />
-            </div>
+            <footer className="mt-auto py-3">
+                <div className="container">
+                    <div className="row">
+                        <div className="col">
+                            <img src={AImodels} alt="AI Models" className={`img-fluid ai-models  float-${Float}`} />
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </>
     )
 }

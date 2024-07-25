@@ -9,7 +9,8 @@ import Footer from './components/Footer';
 
 import LoginScreen from "./screens/LoginScreen";
 import SourceScreen from './screens/SourceScreen';
-import ConnectScreen from './screens/ConnectScreen';
+import SQLConnectScreen from './screens/SQLConnectScreen';
+import CSVConnectScreen from './screens/CSVConnectScreen';
 import ProcessingScreen from './screens/ProcessingScreen';
 import ModelScreen from './screens/ModelScreen';
 import InferenceScreen from './screens/InferenceScreen';
@@ -18,14 +19,20 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route index path="/" element={<LoginScreen />} />
+        <Route path="/" element={<LoginScreen />} />
         <Route path="/" element={<NavBar />} >
+
           <Route path="/" element={<Footer />} >
-            <Route path="/source" element={<SourceScreen />} />
-            <Route path="/connect" element={<ConnectScreen />} />
+
+            <Route path="/data" element={<SourceScreen />} />
+            <Route path="/data/sql" element={<SQLConnectScreen />} />
+            <Route path="/data/csv" element={<CSVConnectScreen />} />
+
             <Route path="/model" element={<ModelScreen />} />
             <Route path="/processing" element={<ProcessingScreen />} />
+
           </Route>
+
           <Route path="/inference" element={<InferenceScreen />} />
         </Route>
       </Routes>
