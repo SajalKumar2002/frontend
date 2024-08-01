@@ -1,33 +1,35 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useContext, useEffect, useCallback } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import axios from '../http';
+
+import DataSourceContext from '../context/Source.Context';
 
 import { Navbar, Nav, Dropdown } from 'react-bootstrap';
 
 import Brandlogo from '../svg/Brandlogo.svg';
 
 const NavBar = () => {
+  const { state } = useContext(DataSourceContext);
+  console.log(state);
   const location = useLocation();
   const navigate = useNavigate();
 
-  const tabs = [
-    { name: "data", type: "structure" },
-    { name: "model", type: "unstructure" },
-    { name: "processing", type: "unstructure" },
-    { name: "inference", type: "structure" },
-  ];
+  const tabs = ["data", "model", "processing", "inference"];
 
   const checkUser = useCallback(async () => {
     try {
-      await axios.get("/api/user/check");
+      const response = await axios.get("/api/user/check");
+      if (response.status !== 201) {
+        throw new Error("User Not verified")
+      }
     } catch (error) {
-      console.error("Error checking user", error);
+      // console.error("Error checking user", error);
       navigate('/');
     }
   }, [navigate]);
 
   useEffect(() => {
-    checkUser();
+    // checkUser();
   }, [checkUser])
 
   const handleLogOut = async (event) => {
@@ -61,7 +63,7 @@ const NavBar = () => {
           <Nav variant="tabs" activeKey={activePath}>
             {tabs.map((tab, index) => (
               <Nav.Item key={index}>
-                <Nav.Link href={`/${tab.name}`} className={`border-3 text-uppercase`}>{tab.name}</Nav.Link>
+                <Nav.Link href={`/${tab}`} className={`border-3 text-uppercase`}>{tab}</Nav.Link>
               </Nav.Item>
             ))}
           </Nav>
@@ -70,7 +72,7 @@ const NavBar = () => {
 
         <Dropdown className='me-5'>
           <Dropdown.Toggle variant='none' id="dropdown-basic" className=''>
-            <p className='d-inline me-5'>Admin</p>
+            <p className='d-inline me-5'>Account</p>
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item >Action 1</Dropdown.Item>

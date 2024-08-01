@@ -4,7 +4,7 @@ import TablePreview from '../components/TablePreview.Connect';
 import { Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-const CSVConnectScreen = () => {
+const PDFConnectScreen = () => {
     const [files, setFiles] = useState([]);
     const [acceptedFiles, setAcceptedFiles] = useState([]);
     const [selectedFileIndex, setSelectedFileIndex] = useState();
@@ -40,12 +40,12 @@ const CSVConnectScreen = () => {
             <div className='row'>
                 <div className='col-7 p-2'>
                     <h3 className='mb-4'>
-                        <span className='text-decoration-underline link-offset-1'>Upload XLS/CSV Files</span>
+                        <span className='text-decoration-underline link-offset-1'>Upload PDF Files</span>
                     </h3>
                     <form onSubmit={handleSubmit}>
                         <section className='container'>
                             <div className='p-3 border-1 mb-3'>
-                                <input type='file' multiple onChange={handleFileChange} accept=".csv" />
+                                <input type='file' multiple onChange={handleFileChange} accept=".pdf" />
                                 <p>Files to Upload</p>
                                 <ol>
                                     {selectedFiles.map((file, index) => (
@@ -68,27 +68,9 @@ const CSVConnectScreen = () => {
                         </div>
                     </form>
                 </div>
-
-                <div className='mt-5'>
-                    <div className='container mb-4'>
-                        <Form.Group className='row w-50'>
-                            <Form.Label className='col-3 m-auto'>Select Table</Form.Label>
-                            <Form.Select className='border-dark rounded-pill col' onChange={(e) => setSelectedFileIndex(e.target.value)}>
-                                <option>Select a Table</option>
-                                {acceptedFiles.map((file, index) => (
-                                    <option key={index} value={index}>{file.name}</option>
-                                ))}
-                            </Form.Select>
-                        </Form.Group>
-                    </div>
-                    {acceptedFiles.length > 0 && selectedFileIndex !== undefined ?
-                        <TablePreview tableData={acceptedFiles[selectedFileIndex].table} />
-                        : ""
-                    }
-                </div>
             </div>
         </div>
     );
 };
 
-export default CSVConnectScreen;
+export default PDFConnectScreen;

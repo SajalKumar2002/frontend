@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 
-// import SqlConnectScreen from './SqlConnectScreen';
+import DataSourceContext from '../context/Source.Context';
+
 import RadioFormOptions from '../components/RadioFormOptions';
 
 import Excel from '../svg/Excel.svg';
@@ -13,22 +14,17 @@ import S3Bucket from '../svg/S3Bucket.svg';
 import Ownmodel from '../svg/OwnModel.svg';
 
 const SourceScreen = () => {
+  const { state, dispatch } = useContext(DataSourceContext);
   const redirect = useNavigate();
-  const [selectedValue, setSelectedValue] = useState();
+  const [selectedValue, setSelectedValue] = useState(state || "");
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
-
   const handleNext = (event) => {
     event.preventDefault();
-    if (!selectedValue)
-      alert("Choose a Value")
-    else if (selectedValue === "unstructured")
-      redirect('/model')
-    else if (selectedValue)
-      redirect(`/data/${selectedValue}`)
-
+    dispatch({ type: 'SOURCE', payload: selectedValue })
+    redirect(`/data/${selectedValue}`)
   }
 
   return (
@@ -47,16 +43,16 @@ const SourceScreen = () => {
             <h5 className='fw-bold fs-4 header-color'>Unstructure Data</h5>
             <div className='border border-black border-2 p-4'>
               <Form.Group className='d-flex text-center'>
-                <RadioFormOptions onChange={handleChange} name="unstructured" SrcPath={PDF} title="Upload from PDF File" AltText="PDF" />
-                <RadioFormOptions onChange={handleChange} name="unstructured" SrcPath={VideoCamera} title="Upload Audio/Video Clip" AltText="VideoCamera" />
-                <RadioFormOptions onChange={handleChange} name="unstructured" SrcPath={S3Bucket} title="Connect to S3 Bucket" AltText="S3 Bucket" />
-                <RadioFormOptions onChange={handleChange} name="unstructured" SrcPath={Ownmodel} title="Train on your Own Text" AltText="Own model" />
+                <RadioFormOptions onChange={handleChange} name="pdf" SrcPath={PDF} title="Upload from PDF File" AltText="PDF" />
+                <RadioFormOptions onChange={handleChange} name="clip" SrcPath={VideoCamera} title="Upload Audio/Video Clip" AltText="VideoCamera" />
+                <RadioFormOptions onChange={handleChange} name="s3" SrcPath={S3Bucket} title="Connect to S3 Bucket" AltText="S3 Bucket" />
+                <RadioFormOptions onChange={handleChange} name="Owntext" SrcPath={Ownmodel} title="Train on your Own Text" AltText="Own model" />
               </Form.Group>
             </div>
           </div>
         </div >
         <div className='d-flex justify-content-end'>
-          <Button onClick={handleNext}>Next</Button>
+          <Button className={selectedValue.length > 0 ? '' : "disabled"} onClick={handleNext}>Next</Button>
         </div>
       </div>
       <Outlet />

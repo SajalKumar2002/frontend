@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form, Nav, Tab } from 'react-bootstrap';
 
 import PromptBar from '../components/PromptBar';
-// import SidePanel from '../components/SidePanel';
+import LLMModels from '../components/LLMModels';
 
 const InferenceScreen = () => {
 
@@ -39,11 +39,7 @@ const InferenceScreen = () => {
 
             <div className="col-2 bg-history-inferenceScreen p-3 overflow-auto text-white d-flex flex-column h-custom">
 
-              <Form.Select className=''>
-                <option value="1">Model 1</option>
-                <option value="2">Model 2</option>
-                <option value="3">Model 3</option>
-              </Form.Select>
+              <LLMModels />
               <Nav variant="pills" className='d-flex flex-column'>
                 <div>
                   <hr />

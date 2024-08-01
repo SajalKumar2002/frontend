@@ -1,91 +1,68 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+
+import DataSourceContext from '../context/Source.Context';
 
 import JobID from '../components/JobID';
+import RadioModelButton from '../components/RadioModelButton';
 
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Collapse } from 'react-bootstrap';
+import LLMModels from '../components/LLMModels';
 
 const ModelScreen = () => {
+  const { state } = useContext(DataSourceContext)
+  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedModel, setSelectedModel] = useState();
 
-  
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+  }
+
+  const handleExistingSubmit = (event) => {
+    event.preventDefault();
+    console.log(event.target.existingmodel.value);
+  }
+
+  const handleNewSubmit = (event) => {
+    event.preventDefault();
+    console.log("handleNewModelSubmit Submitted")
+  }
 
   return (
     <>
-      <div className='container'>
+      <div className='container' style={{ height: "39rem" }}>
+        {/* Header */}
         <div className='col-8 my-4'>
           <p className='fs-4'>Select a model to train. You can select an existing model or train a new model. The model will be trained on your data.</p>
         </div>
 
+        {/* Option 1 */}
         <div className='col-5'>
-          <Form.Group>
-            <Form.Check
-              type='radio'
-              className='fs-5'
-              name='model'
-              onChange={() => console.log("Something")}
-              label="Select from an existing model"
-            />
-          </Form.Group>
+          <RadioModelButton
+            name="model"
+            value="existing"
+            label="Select from existing models"
+            checked={selectedOption === 'existing'}
+            onChange={handleOptionChange}
+          />
         </div>
 
-        <div className="container px-5">
-          <div className="row col-5">
-            <div className="col-9">
-              <Form.Select className='border-dark rounded-pill'>
-                <option value="1">Model 1</option>
-                <option value="2">Model 2</option>
-                <option value="3">Model 3</option>
-              </Form.Select>
-            </div>
+        <Collapse in={selectedOption === 'existing'}>
+          <div className="container px-5">
+            <div className="row col-5">
+              <Form onSubmit={handleExistingSubmit}>
+                <Form.Group className='row'>
+                  <div className="col-9">
+                    <LLMModels
+                      rounded="rounded-pill"
+                      onChange={setSelectedModel}
+                    />
+                  </div>
 
-            <div className="col-3 align-content-center text-end">
-              <Button className='rounded-pill px-4' size='sm'>Train</Button>
-            </div>
-
-            <div className="container fs-custom-jobid mt-2">
-              <div className="row justify-content-end">
-                <div className="col-4 text-end pe-0">
-                  <JobID />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className='col-5'>
-          <Form.Group>
-            <Form.Check
-              type='radio'
-              className='fs-5'
-              name='model'
-              onChange={() => console.log("Something")}
-              label="Train a new model"
-            />
-          </Form.Group>
-        </div>
-
-        <div className="container px-5">
-          <div className="col-6">
-            <div className="container ">
-              <Form.Group className='row mb-1'>
-                <Form.Label className='col-7 my-auto'>Select a model for cloning(Optional)</Form.Label>
-                <Form.Select className='col border-dark rounded-pill text-secondary'>
-                  <option value="1">Model 1</option>
-                  <option value="2">Model 2</option>
-                  <option value="3">Model 3</option>
-                </Form.Select>
-              </Form.Group>
-              <Form.Group className='row mb-1'>
-                <Form.Label className='col-7 my-auto'>Model Name</Form.Label>
-                <Form.Control className='col rounded-pill border-dark' placeholder="Model Name" />
-              </Form.Group>
-              <Form.Group className='row mb-1'>
-                <Form.Label className='col-7 my-auto'>Parameter 1</Form.Label>
-                <Form.Control className='col rounded-pill border-dark' placeholder="Parameter Value" />
-              </Form.Group>
-              <Form.Group className='row mb-1 p-0'>
-                <Form.Label className='col-7 my-auto'>Parameter 2</Form.Label>
-                <Form.Control className='col rounded-pill border-dark' placeholder="Parameter Value" />
-              </Form.Group>
+                  <div className="col-3 align-content-center text-end">
+                    <Button type='submit' className={`rounded-pill px-4  `} size='sm'>Train</Button>
+                  </div>
+                </Form.Group>
+              </Form>
 
               <div className="container fs-custom-jobid mt-2">
                 <div className="row justify-content-end">
@@ -96,8 +73,63 @@ const ModelScreen = () => {
               </div>
             </div>
           </div>
-        </div>
+        </Collapse>
 
+        {/* Option 2 */}
+        {state == "sql" || state == "csv" ?
+          <></>
+          :
+          <>
+            <div className='col-5'>
+              <RadioModelButton
+                name="model"
+                value="new"
+                label="Train a new model"
+                checked={selectedOption === 'new'}
+                onChange={handleOptionChange}
+              />
+            </div>
+
+            <Collapse in={selectedOption === 'new'}>
+              <div className="container px-5">
+                <div className="col-6">
+                  <div className="container">
+                    <Form onSubmit={handleNewSubmit}>
+                      <Form.Group className='row mb-1'>
+                        <Form.Label className='col-7 my-auto'>Select a model for cloning(Optional)</Form.Label>
+                        <div className="col p-0">
+                          <LLMModels rounded="rounded-pill" />
+                        </div>
+                      </Form.Group>
+                      <Form.Group className='row mb-1'>
+                        <Form.Label className='col-7 my-auto'>Model Name</Form.Label>
+                        <Form.Control className='col rounded-pill border-dark' placeholder="Model Name" />
+                      </Form.Group>
+                      <Form.Group className='row mb-1'>
+                        <Form.Label className='col-7 my-auto'>Parameter 1</Form.Label>
+                        <Form.Control className='col rounded-pill border-dark' placeholder="Parameter Value" />
+                      </Form.Group>
+                      <Form.Group className='row mb-1'>
+                        <Form.Label className='col-7 my-auto'>Parameter 2</Form.Label>
+                        <Form.Control className='col rounded-pill border-dark' placeholder="Parameter Value" />
+                      </Form.Group>
+                      <div className="text-end">
+                        <Button type='submit'>Train</Button>
+                      </div>
+                    </Form>
+                    <div className="container fs-custom-jobid mt-2">
+                      <div className="row justify-content-end">
+                        <div className="col-4 text-end pe-0">
+                          <JobID />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Collapse>
+          </>
+        }
       </div >
     </>
   )
