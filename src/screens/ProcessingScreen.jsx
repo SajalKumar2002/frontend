@@ -2,9 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Form, Table } from 'react-bootstrap';
 
 import SampleData from '../MOCK_DATA.json';
+import axios from '../http';
 
 const ProcessingScreen = () => {
-  const [records, setRecords] = useState(SampleData);
+  const [records, setRecords] = useState([]);
+
+  const getJob = async () => {
+    const response = await axios.get('/api/job/')
+    if (response.data.success) {
+      setRecords(response.data.job_details)
+    }
+  }
 
   const filterByJobID = (filteringText) => {
     setRecords(
@@ -22,11 +30,14 @@ const ProcessingScreen = () => {
     )
   }
 
+  useEffect(() => { }, [records])
+
   useEffect(() => {
-  }, [records])
+    getJob();
+  }, [])
 
   return (
-    <div className='container mt-4'>
+    <div className='container mt-4' style={{ height: "39rem" }}>
       <div className='row w-50'>
         <p className='fs-4' >You can check the status of model training jobs submitted in the "Model" section.</p>
       </div>
@@ -46,30 +57,35 @@ const ProcessingScreen = () => {
         </div>
       </div>
 
-      <div className="container ms-5 mt-4 w-75 overflow-auto scrollbar-hide" style={{maxHeight: "25rem"}}>
-        <Table striped bordered hover>
-          <thead>
-            <tr className='text-center'>
-              <th></th>
-              <th>Job ID</th>
-              <th>Submitted Time</th>
-              <th>Expected Time</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {records.map((record, index) => (
-              <tr className='text-center' key={index} >
-                <td>{index + 1}</td>
-                <td className='text-start'>{record.job_id}</td>
-                <td>{record.submitted_time}</td>
-                <td>{record.expected_time}</td>
-                <td>{record.status}</td>
+      {records.length > 0 ?
+        <div className="container ms-5 mt-4 w-75 overflow-auto scrollbar-hide" style={{ maxHeight: "25rem" }}>
+          <Table striped bordered hover>
+            <thead>
+              <tr className='text-center'>
+                <th></th>
+                <th>Job ID</th>
+                <th>Submitted Time</th>
+                <th>Expected Time</th>
+                <th>Status</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-      </div>
+            </thead>
+            <tbody>
+              {records.map((record, index) => (
+                <tr className='text-center' key={index} >
+                  <td>{index + 1}</td>
+                  <td className='text-start'>{record.id}</td>
+                  <td>{record.createdAt}</td>
+                  <td>{record.expected_time}</td>
+                  <td>{record.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
+        :
+        <></>
+      }
+
 
     </div >
   )

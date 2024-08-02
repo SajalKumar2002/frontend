@@ -7,6 +7,7 @@ import RadioModelButton from '../components/RadioModelButton';
 
 import { Form, Button, Collapse } from 'react-bootstrap';
 import LLMModels from '../components/LLMModels';
+import axios from '../http';
 
 const ModelScreen = () => {
   const { state } = useContext(DataSourceContext)
@@ -17,9 +18,13 @@ const ModelScreen = () => {
     setSelectedOption(event.target.value);
   }
 
-  const handleExistingSubmit = (event) => {
+  const handleExistingSubmit = async (event) => {
     event.preventDefault();
-    console.log(event.target.existingmodel.value);
+    const response = await axios.get("/api/job/generate")
+    console.log(response.data);
+    // if (response.data.success) {
+    //   setJob(response.data.job);
+    // }
   }
 
   const handleNewSubmit = (event) => {
@@ -27,12 +32,14 @@ const ModelScreen = () => {
     console.log("handleNewModelSubmit Submitted")
   }
 
+
   return (
     <>
       <div className='container' style={{ height: "39rem" }}>
         {/* Header */}
         <div className='col-8 my-4'>
-          <p className='fs-4'>Select a model to train. You can select an existing model or train a new model. The model will be trained on your data.</p>
+          <p className='fs-4 mb-0'>The model will be trained on your data.</p>
+          <p className='fs-4'>Select a model to train.</p>
         </div>
 
         {/* Option 1 */}
@@ -49,6 +56,7 @@ const ModelScreen = () => {
         <Collapse in={selectedOption === 'existing'}>
           <div className="container px-5">
             <div className="row col-5">
+
               <Form onSubmit={handleExistingSubmit}>
                 <Form.Group className='row'>
                   <div className="col-9">
@@ -59,18 +67,15 @@ const ModelScreen = () => {
                   </div>
 
                   <div className="col-3 align-content-center text-end">
-                    <Button type='submit' className={`rounded-pill px-4  `} size='sm'>Train</Button>
+                    <Button type='submit' className="rounded-pill px-4" size='sm'>Train</Button>
                   </div>
                 </Form.Group>
+
+                <div className="row">
+                  {/* <JobID /> */}
+                </div>
               </Form>
 
-              <div className="container fs-custom-jobid mt-2">
-                <div className="row justify-content-end">
-                  <div className="col-4 text-end pe-0">
-                    <JobID />
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </Collapse>

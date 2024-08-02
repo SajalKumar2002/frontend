@@ -20,7 +20,7 @@ const LoginScreen = () => {
           </div>
         </div>
       </div>
-      <Footer Float="end" />
+      {/* <Footer Float="end" /> */}
     </div>
   )
 }

@@ -2,15 +2,11 @@ import React, { useContext, useEffect, useCallback } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import axios from '../http';
 
-import DataSourceContext from '../context/Source.Context';
-
 import { Navbar, Nav, Dropdown } from 'react-bootstrap';
 
 import Brandlogo from '../svg/Brandlogo.svg';
 
 const NavBar = () => {
-  const { state } = useContext(DataSourceContext);
-  console.log(state);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -23,13 +19,12 @@ const NavBar = () => {
         throw new Error("User Not verified")
       }
     } catch (error) {
-      // console.error("Error checking user", error);
       navigate('/');
     }
   }, [navigate]);
 
   useEffect(() => {
-    // checkUser();
+    checkUser();
   }, [checkUser])
 
   const handleLogOut = async (event) => {

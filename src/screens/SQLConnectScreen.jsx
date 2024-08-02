@@ -1,23 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios';
+import axios from '../http';
 
 import TablePreview from '../components/TablePreview.Connect';
 
 const SQLConnectScreen = () => {
   const redirect = useNavigate();
+  const [tables, setTables] = useState([]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await axios.post('https://8115-34-83-116-169.ngrok-free.app/set_db_config', {
+    const response = await axios.post('/api/data/sql', {
       serveraddress: event.target.serveraddress.value,
       port: event.target.port.value,
       username: event.target.username.value,
       password: event.target.password.value,
       database: event.target.database.value
     })
-    console.log(response.data);
+    if (response.data.success)
+      setTables(response.data.tables);
+    else
+      alert(response.data.message)
   }
 
   return (
@@ -28,52 +32,59 @@ const SQLConnectScreen = () => {
       </div>
       <div className='container mt-2'>
         <div className='row mt-2'>
+
           <div className="p-2">
             <h3 className='mb-4'><span className="text-decoration-underline link-offset-1">Connect to SQL DB</span></h3>
             <Form className='container px-5' onSubmit={handleSubmit}>
               <Form.Group className='row mb-1'>
                 <Form.Label className='col-3 my-auto'>Server Address</Form.Label>
-                <Form.Control name='serveraddress' className='col border-dark rounded-pill' type="text" placeholder="192.168.1.1" required />
+                <Form.Control name='serveraddress' className='col border-dark rounded-pill' type="text" placeholder="192.168.1.1" required autoComplete="off" />
               </Form.Group>
               <Form.Group className='row mb-1'>
                 <Form.Label className='col-3 my-auto'>Port</Form.Label>
-                <Form.Control name='port' className='col border-dark rounded-pill' type="text" placeholder="Port" required />
+                <Form.Control name='port' className='col border-dark rounded-pill' type="text" placeholder="Port" autoComplete="off" />
               </Form.Group>
               <Form.Group className='row mb-1'>
                 <Form.Label className='col-3 my-auto'>Username</Form.Label>
-                <Form.Control name='username' className='col border-dark rounded-pill' type="text" placeholder="Username" required />
+                <Form.Control name='username' className='col border-dark rounded-pill' type="text" placeholder="Username" required autoComplete="off" />
               </Form.Group>
               <Form.Group className='row mb-1'>
                 <Form.Label className='col-3 my-auto'>Password</Form.Label>
-                <Form.Control name='password' className='col border-dark rounded-pill' type="password" placeholder="Password" required />
+                <Form.Control name='password' className='col border-dark rounded-pill' type="password" placeholder="Password" required autoComplete="off" />
               </Form.Group>
               <Form.Group className='row mb-3'>
                 <Form.Label className='col-3 my-auto'>Database</Form.Label>
-                <Form.Control name='database' className='col border-dark rounded-pill' type="text" placeholder="Database" required />
+                <Form.Control name='database' className='col border-dark rounded-pill' type="text" placeholder="Database" required autoComplete="off" />
               </Form.Group>
               <div className='row justify-content-end'>
                 <div className="text-center">
-                  <Button variant="info" className='me-2 text-white' type='reset'>Reset</Button>
+                  <Button variant="info" className='me-2 text-white' onClick={() => redirect('/data/sql')}>Reset</Button>
                   <Button variant="info" className='ms-2 text-white' type='submit'>Connect</Button>
                 </div>
               </div>
             </Form>
           </div>
-          <div className=''>
-            <Form.Group className=' mb-3'>
-              <Form.Label className='col-3 my-auto'>Choose Table</Form.Label>
-              <Form.Select className='col border-dark rounded-pill'>
-                <option value="1">Table 1</option>
-                <option value="2">Table 2</option>
-                <option value="3">Table 3</option>
-              </Form.Select>
-            </Form.Group>
-            <TablePreview />
-          </div>
+
+          {tables || tables.length > 0 ?
+            <div className=''>
+              <Form.Group className=' mb-3'>
+                <Form.Label className='col-3 my-auto'>Choose Table</Form.Label>
+                <Form.Select className='col border-dark rounded-pill'>
+                  <option>Select an option</option>
+                  {tables.map((table, index) => (
+                    <option value={table.tableName} key={index} >{table.tableName}</option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+              <TablePreview tableData={[]} />
+            </div>
+            :
+            <></>
+          }
         </div>
       </div>
     </>
   )
 }
 
-export default SQLConnectScreen
+export default SQLConnectScreen;
