@@ -7,7 +7,7 @@ const Footer = ({ Float }) => {
     return (
         <>
             <Outlet />
-            <footer className="mt-auto py-3">
+            <div className="mt-auto py-3">
                 <div className="container">
                     <div className="row">
                         <div className="col">
@@ -15,7 +15,7 @@ const Footer = ({ Float }) => {
                         </div>
                     </div>
                 </div>
-            </footer>
+            </div>
         </>
     )
 }

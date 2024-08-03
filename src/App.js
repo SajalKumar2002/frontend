@@ -36,6 +36,8 @@ function App() {
 
               <Route element={<Footer />} >
 
+                <Route path="/model" element={<ModelScreen />} />
+                <Route path="/processing" element={<ProcessingScreen />} />
                 <Route path="/data" element={<SourceScreen />} />
                 <Route path="/data/sql" element={<SQLConnectScreen />} />
                 <Route path="/data/csv" element={<CSVConnectScreen />} />
@@ -44,8 +46,6 @@ function App() {
                 {/* <Route path="/data/s3" element={<PDFConnectScreen />} /> */}
                 {/* <Route path="/data/owntext" element={<PDFConnectScreen />} /> */}
 
-                <Route path="/model" element={<ModelScreen />} />
-                <Route path="/processing" element={<ProcessingScreen />} />
 
               </Route>
 

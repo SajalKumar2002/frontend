@@ -22,7 +22,6 @@ const ModelScreen = () => {
   const handleExistingSubmit = async (event) => {
     event.preventDefault();
     const response = await axios.get("/api/job/generate")
-    console.log(response.data.job);
     if (response.data.success) {
       setJob(response.data.job);
     }
@@ -32,7 +31,6 @@ const ModelScreen = () => {
     event.preventDefault();
     console.log("handleNewModelSubmit Submitted")
   }
-
 
   return (
     <>
@@ -85,7 +83,7 @@ const ModelScreen = () => {
         </Collapse>
 
         {/* Option 2 */}
-        {state == "sql" || state == "csv" ?
+        {state.source == "sql" || state.source == "csv" ?
           <></>
           :
           <>

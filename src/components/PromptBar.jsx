@@ -6,16 +6,17 @@ const PromptBar = ({ handleResponse }) => {
 
     const handleKeyDown = async (event) => {
         if (event.key === 'Enter') {
-            const response = await axios.post('https://8115-34-83-116-169.ngrok-free.app/generate_sql_query',
-                { question: promptText },
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    }
-                }
-            )
-            console.log(response.data.sql_query);
-            postQuery(response.data.sql_query);
+            // const response = await axios.post('https://8115-34-83-116-169.ngrok-free.app/generate_sql_query',
+            //     { question: promptText },
+            //     {
+            //         headers: {
+            //             'Content-Type': 'multipart/form-data',
+            //         }
+            //     }
+            // )
+            // console.log(response.data.sql_query);
+            // postQuery(response.data.sql_query);
+            postQuery();
         }
     }
 

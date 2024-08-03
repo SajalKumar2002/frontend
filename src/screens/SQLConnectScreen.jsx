@@ -1,27 +1,42 @@
 import React, { useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import axios from '../http';
+import axios, { AxiosHeaders } from 'axios';
 
 import TablePreview from '../components/TablePreview.Connect';
 
 const SQLConnectScreen = () => {
   const redirect = useNavigate();
-  const [tables, setTables] = useState([]);
+  // const [tables, setTables] = useState([]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await axios.post('/api/data/sql', {
-      serveraddress: event.target.serveraddress.value,
-      port: event.target.port.value,
-      username: event.target.username.value,
-      password: event.target.password.value,
-      database: event.target.database.value
-    })
-    if (response.data.success)
-      setTables(response.data.tables);
-    else
-      alert(response.data.message)
+    try {
+      const data = {
+        user: 'root',
+        password: 'root',
+        host: 'localhost',
+        port: '3306',
+        database: 'Chinook'
+      };
+      const response = await axios.post(
+        'https://a9e5-34-105-38-4.ngrok-free.app/set_db_config',
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+    // if (response.data) {
+    //   // setTables(response.data.tables);
+    // } else {
+    // }
+    // alert(response.data.message)
   }
 
   return (
@@ -30,7 +45,7 @@ const SQLConnectScreen = () => {
         <Button variant='primary' onClick={() => redirect('/data')}>{"<"}Back</Button>
         <Button variant='primary' onClick={() => redirect('/model')}>Next{">"}</Button>
       </div>
-      <div className='container mt-2'>
+      <div className='container mt-2'  >
         <div className='row mt-2'>
 
           <div className="p-2">
@@ -38,7 +53,7 @@ const SQLConnectScreen = () => {
             <Form className='container px-5' onSubmit={handleSubmit}>
               <Form.Group className='row mb-1'>
                 <Form.Label className='col-3 my-auto'>Server Address</Form.Label>
-                <Form.Control name='serveraddress' className='col border-dark rounded-pill' type="text" placeholder="192.168.1.1" required autoComplete="off" />
+                <Form.Control name='serveraddress' className='col border-dark rounded-pill' type="text" placeholder="192.168.1.1" autoComplete="off" />
               </Form.Group>
               <Form.Group className='row mb-1'>
                 <Form.Label className='col-3 my-auto'>Port</Form.Label>
@@ -46,15 +61,15 @@ const SQLConnectScreen = () => {
               </Form.Group>
               <Form.Group className='row mb-1'>
                 <Form.Label className='col-3 my-auto'>Username</Form.Label>
-                <Form.Control name='username' className='col border-dark rounded-pill' type="text" placeholder="Username" required autoComplete="off" />
+                <Form.Control name='username' className='col border-dark rounded-pill' type="text" placeholder="Username" autoComplete="off" />
               </Form.Group>
               <Form.Group className='row mb-1'>
                 <Form.Label className='col-3 my-auto'>Password</Form.Label>
-                <Form.Control name='password' className='col border-dark rounded-pill' type="password" placeholder="Password" required autoComplete="off" />
+                <Form.Control name='password' className='col border-dark rounded-pill' type="password" placeholder="Password" autoComplete="off" />
               </Form.Group>
               <Form.Group className='row mb-3'>
                 <Form.Label className='col-3 my-auto'>Database</Form.Label>
-                <Form.Control name='database' className='col border-dark rounded-pill' type="text" placeholder="Database" required autoComplete="off" />
+                <Form.Control name='database' className='col border-dark rounded-pill' type="text" placeholder="Database" autoComplete="off" />
               </Form.Group>
               <div className='row justify-content-end'>
                 <div className="text-center">
@@ -65,7 +80,7 @@ const SQLConnectScreen = () => {
             </Form>
           </div>
 
-          {tables || tables.length > 0 ?
+          {/* {tables || tables.length > 0 ?
             <div className=''>
               <Form.Group className=' mb-3'>
                 <Form.Label className='col-3 my-auto'>Choose Table</Form.Label>
@@ -80,7 +95,7 @@ const SQLConnectScreen = () => {
             </div>
             :
             <></>
-          }
+          } */}
         </div>
       </div>
     </>

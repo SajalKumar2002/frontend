@@ -7,18 +7,7 @@ import DataSourceContext from '../context/Source.Context';
 
 const InferenceScreen = () => {
   const { state } = useContext(DataSourceContext);
-  const [currentChat, setCurrentChat] = useState(
-    [
-      {
-        question: "How many albums",
-        answer: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inventore fugit quidem facilis est quibusdam explicabo alias repudiandae consequatur iure deserunt. Quis obcaecati similique debitis, molestias consectetur cum officia sunt sequi!"
-      },
-      {
-        question: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quidem natus ullam ",
-        answer: "ipsum dolor, sit amet"
-      }
-    ]
-  );
+  const [currentChat, setCurrentChat] = useState([]);
 
   const handleChat = async (responseChat) => {
     setCurrentChat([

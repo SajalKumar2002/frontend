@@ -14,7 +14,7 @@ const NavBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const tabs = ["model", "processing", "inference"];
+  const tabs = ["data", "model", "processing", "inference"];
 
   const checkUser = useCallback(async () => {
     try {
@@ -61,12 +61,9 @@ const NavBar = () => {
           </Navbar.Brand>
 
           <Nav variant="tabs" activeKey={activePath}>
-            <Nav.Item>
-              <Nav.Link href='/data' className={`border-3 text-uppercase`}>data</Nav.Link>
-            </Nav.Item>
             {tabs.map((tab, index) => (
               <Nav.Item key={index}>
-                <Nav.Link href={`/${tab}`} className={`border-3 text-uppercase`} disabled={state.source == ""} >{tab}</Nav.Link>
+                <Nav.Link href={`/${tab}`} className={`border-3 text-uppercase`} >{tab}</Nav.Link>
               </Nav.Item>
             ))}
           </Nav>
