@@ -2,7 +2,6 @@ import React from 'react';
 import brandlogo from '../svg/Brandlogo.svg';
 
 import LoginForm from '../components/LoginForm';
-import Footer from '../components/Footer';
 
 const LoginScreen = () => {
   return (
@@ -20,7 +19,6 @@ const LoginScreen = () => {
           </div>
         </div>
       </div>
-      {/* <Footer Float="end" /> */}
     </div>
   )
 }

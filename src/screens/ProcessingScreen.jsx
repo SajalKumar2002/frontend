@@ -1,36 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Table } from 'react-bootstrap';
 
-import SampleData from '../MOCK_DATA.json';
 import axios from '../http';
 
 const ProcessingScreen = () => {
   const [records, setRecords] = useState([]);
+  const [result, setResult] = useState([]);
 
   const getJob = async () => {
     const response = await axios.get('/api/job/')
     if (response.data.success) {
       setRecords(response.data.job_details)
+      setResult(response.data.job_details)
     }
   }
 
   const filterByJobID = (filteringText) => {
-    setRecords(
-      SampleData.filter((record) => (
-        record.job_id.includes(filteringText.toUpperCase()) ? record : null
+    setResult(
+      records.filter((record) => (
+        record.id.includes(filteringText.toLowerCase()) ? record : null
       ))
     )
   }
 
   const filterByStatus = (filteringText) => {
-    setRecords(
-      SampleData.filter((record) => (
+    setResult(
+      records.filter((record) => (
         record.status.includes(filteringText.toLowerCase()) ? record : null
       ))
     )
   }
 
-  useEffect(() => { }, [records])
+  useEffect(() => { }, [result])
 
   useEffect(() => {
     getJob();
@@ -57,7 +58,7 @@ const ProcessingScreen = () => {
         </div>
       </div>
 
-      {records.length > 0 ?
+      {result.length > 0 ?
         <div className="container ms-5 mt-4 w-75 overflow-auto scrollbar-hide" style={{ maxHeight: "25rem" }}>
           <Table striped bordered hover>
             <thead>
@@ -70,12 +71,12 @@ const ProcessingScreen = () => {
               </tr>
             </thead>
             <tbody>
-              {records.map((record, index) => (
+              {result.map((record, index) => (
                 <tr className='text-center' key={index} >
                   <td>{index + 1}</td>
                   <td className='text-start'>{record.id}</td>
                   <td>{record.createdAt}</td>
-                  <td>{record.expected_time}</td>
+                  <td>{record.expectedTime}</td>
                   <td>{record.status}</td>
                 </tr>
               ))}

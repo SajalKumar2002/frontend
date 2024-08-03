@@ -5,14 +5,17 @@ import { Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 const CSVConnectScreen = () => {
-    const [files, setFiles] = useState([]);
     const [acceptedFiles, setAcceptedFiles] = useState([]);
-    const [selectedFileIndex, setSelectedFileIndex] = useState();
     const [selectedFiles, setSelectedFiles] = useState([]);
+    const [selectedFileIndex, setSelectedFileIndex] = useState();
 
     const handleFileChange = (event) => {
-        const filesArray = Array.from(event.target.files);
-        setSelectedFiles((prevFiles) => [...prevFiles, ...filesArray]);
+        if (selectedFiles.length <= 5) {
+            const filesArray = Array.from(event.target.files);
+            setSelectedFiles((prevFiles) => [...prevFiles, ...filesArray]);
+        } else {
+            alert("Limit exceeded")
+        }
     };
 
     const handleSubmit = async (event) => {
@@ -29,14 +32,19 @@ const CSVConnectScreen = () => {
                 },
             });
             setSelectedFiles([])
-            setAcceptedFiles(response.data);
+            setAcceptedFiles((prevAccFile) => (
+                [
+                    ...prevAccFile,
+                    ...response.data
+                ]
+            ));
         } catch (error) {
-            console.error('Error uploading files:', error);
+            alert('Error uploading files:', error);
         }
     };
 
     return (
-        <div className='container mt-5'>
+        <div className='container mt-5' style={{height: "38rem"}}>
             <div className='row'>
                 <div className='col-7 p-2'>
                     <h3 className='mb-4'>

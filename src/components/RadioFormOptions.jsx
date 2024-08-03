@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Form } from 'react-bootstrap';
 
-const RadioFormOptions = ({ SrcPath, title, AltText, name, onChange }) => {
+const RadioFormOptions = ({ SrcPath, title, AltText, name, onChange, selectedValue }) => {
+
     return (
         <Form.Group className='me-5 d-flex flex-row'>
             <Form.Check.Input
@@ -11,6 +12,7 @@ const RadioFormOptions = ({ SrcPath, title, AltText, name, onChange }) => {
                 name="source"
                 value={name}
                 onChange={onChange}
+                checked={selectedValue === name}
             />
             <div className='' style={{ width: "8rem" }}>
                 <img src={SrcPath} alt={AltText} height='100' />

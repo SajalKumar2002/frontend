@@ -13,6 +13,7 @@ const ModelScreen = () => {
   const { state } = useContext(DataSourceContext)
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedModel, setSelectedModel] = useState();
+  const [job, setJob] = useState();
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
@@ -21,10 +22,10 @@ const ModelScreen = () => {
   const handleExistingSubmit = async (event) => {
     event.preventDefault();
     const response = await axios.get("/api/job/generate")
-    console.log(response.data);
-    // if (response.data.success) {
-    //   setJob(response.data.job);
-    // }
+    console.log(response.data.job);
+    if (response.data.success) {
+      setJob(response.data.job);
+    }
   }
 
   const handleNewSubmit = (event) => {
@@ -72,7 +73,10 @@ const ModelScreen = () => {
                 </Form.Group>
 
                 <div className="row">
-                  {/* <JobID /> */}
+                  {job ?
+                    <JobID job={job} />
+                    : <></>
+                  }
                 </div>
               </Form>
 
@@ -125,7 +129,10 @@ const ModelScreen = () => {
                     <div className="container fs-custom-jobid mt-2">
                       <div className="row justify-content-end">
                         <div className="col-4 text-end pe-0">
-                          <JobID />
+                          {job ?
+                            <JobID job={job} />
+                            : <></>
+                          }
                         </div>
                       </div>
                     </div>

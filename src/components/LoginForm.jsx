@@ -9,22 +9,17 @@ import axios from '../http';
 function LoginForm() {
     const redirect = useNavigate();
 
-    const [show, setShow] = useState(false);
-    const [loginMessage, setLoginMessage] = useState({ success: false, message: "Waiting" });
-
-    const handleClose = () => setShow(false)
-    const handleShow = () => setShow(true);
-
     const HandleSubmit = async (event) => {
         event.preventDefault();
         const response = await axios.post('/api/user/login', {
             email: event.target.email.value,
             password: event.target.password.value
         })
-        setLoginMessage(response.data);
         if (response.data.success) {
-            handleShow();
-            redirect('/data')
+            alert(response.data.message)
+            redirect("/data");
+        } else {
+            alert(response.data.message)
         }
     }
 
@@ -40,20 +35,6 @@ function LoginForm() {
                 </Form.Group>
                 <Button type='submit' variant='primary' className='w-100'>Submit</Button>
             </Form>
-
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header className='border-0' closeButton>
-                </Modal.Header>
-                <Modal.Body className='text-center'>
-                    <p className='fs-4 m-0'>{loginMessage.message}</p>
-                    <img src={loginMessage.success ? GreenCheck : ""} alt='' />
-                </Modal.Body>
-                <Modal.Footer className='justify-content-center border-0'>
-                    <Button variant="primary" onClick={handleClose} className='w-25 fs-bold mb-5'>
-                        OK
-                    </Button>
-                </Modal.Footer>
-            </Modal>
         </>
     )
 }

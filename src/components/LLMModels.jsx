@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from '../http';
 import { Form, Spinner } from 'react-bootstrap';
 
-const LLMModels = ({ rounded, onChange }) => {
+const LLMModels = ({ rounded, onChange, defaultValue }) => {
     const [llmModels, setLlmModels] = useState()
 
     const fetchModels = async () => {
@@ -24,7 +24,7 @@ const LLMModels = ({ rounded, onChange }) => {
 
     return (
         <>
-            <Form.Select name='existingmodel' className={`border-dark ${rounded}`} onChange={(e) => onChange(e.target.value)}>
+            <Form.Select name='existingmodel' defaultValue={defaultValue} className={`border-dark ${rounded}`} onChange={(e) => onChange(e.target.value)}>
                 <option>Select a model</option>
                 {llmModels.map((model, index) => (
                     <option

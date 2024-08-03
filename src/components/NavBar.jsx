@@ -1,16 +1,20 @@
-import React, { useContext, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useContext } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import axios from '../http';
+
+import DataSourceContext from '../context/Source.Context';
 
 import { Navbar, Nav, Dropdown } from 'react-bootstrap';
 
 import Brandlogo from '../svg/Brandlogo.svg';
 
 const NavBar = () => {
+  const { state } = useContext(DataSourceContext);
+
   const location = useLocation();
   const navigate = useNavigate();
 
-  const tabs = ["data", "model", "processing", "inference"];
+  const tabs = ["model", "processing", "inference"];
 
   const checkUser = useCallback(async () => {
     try {
@@ -21,7 +25,7 @@ const NavBar = () => {
     } catch (error) {
       navigate('/');
     }
-  }, [navigate]);
+  }, []);
 
   useEffect(() => {
     checkUser();
@@ -32,6 +36,7 @@ const NavBar = () => {
     try {
       const response = await axios.get("/api/user/logout");
       if (response.status === 200) {
+        localStorage.clear();
         navigate('/');
       }
     } catch (error) {
@@ -56,9 +61,12 @@ const NavBar = () => {
           </Navbar.Brand>
 
           <Nav variant="tabs" activeKey={activePath}>
+            <Nav.Item>
+              <Nav.Link href='/data' className={`border-3 text-uppercase`}>data</Nav.Link>
+            </Nav.Item>
             {tabs.map((tab, index) => (
               <Nav.Item key={index}>
-                <Nav.Link href={`/${tab}`} className={`border-3 text-uppercase`}>{tab}</Nav.Link>
+                <Nav.Link href={`/${tab}`} className={`border-3 text-uppercase`} disabled={state.source == ""} >{tab}</Nav.Link>
               </Nav.Item>
             ))}
           </Nav>
