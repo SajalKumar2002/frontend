@@ -16,20 +16,21 @@ const NavBar = () => {
 
   const tabs = ["data", "model", "processing", "inference"];
 
-  const checkUser = useCallback(async () => {
+  const checkUser = async () => {
     try {
       const response = await axios.get("/api/user/check");
-      if (response.status !== 201) {
+      if (response.status !== 200) {
         throw new Error("User Not verified")
       }
     } catch (error) {
+      console.log(error);
       navigate('/');
     }
-  }, []);
+  };
 
   useEffect(() => {
     checkUser();
-  }, [checkUser])
+  }, [navigate])
 
   const handleLogOut = async (event) => {
     event.preventDefault();
