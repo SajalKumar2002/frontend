@@ -24,7 +24,7 @@ const LLMModels = ({ rounded, onChange, defaultValue }) => {
 
     return (
         <>
-            <Form.Select name='existingmodel' defaultValue={defaultValue} className={`border-dark ${rounded}`} onChange={(e) => onChange(e.target.value)}>
+            <Form.Select name='existingmodel' defaultValue={defaultValue} className={`border-dark ${rounded}`} onChange={onChange}>
                 <option>Select a model</option>
                 {llmModels.map((model, index) => (
                     <option
