@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 
 import DataSourceContext from '../context/Source.Context';
 
@@ -63,7 +63,7 @@ const ModelScreen = () => {
                   </div>
 
                   <div className="col-3 align-content-center text-end">
-                    <Button type='submit' className="rounded-pill px-4" disabled={existingSelectedModel.length == ""} size='sm'>Train</Button>
+                    <Button type='submit' className="rounded-pill px-4" disabled={existingSelectedModel.length === ""} size='sm'>Train</Button>
                   </div>
                 </Form.Group>
 
@@ -80,7 +80,7 @@ const ModelScreen = () => {
         </Collapse>
 
         {/* Option 2 */}
-        {state.source == "sql" || state.source == "csv" ?
+        {state.source === "sql" || state.source === "csv" ?
           <></>
           :
           <>

@@ -13,14 +13,15 @@ const SQLConnectScreen = () => {
     event.preventDefault();
     try {
       const data = {
-        user: 'root',
-        password: 'root',
-        host: 'localhost',
-        port: '3306',
-        database: 'Chinook'
+        "user": event.target.username.value,
+        "password": event.target.password.value,
+        "host": event.target.host.value,
+        "port": event.target.port.value,
+        "database": event.target.database.value
       };
+      console.log(data);
       const response = await axios.post(
-        'https://a9e5-34-105-38-4.ngrok-free.app/set_db_config',
+        "https://c182-34-32-217-62.ngrok-free.app/set_db_config",
         data,
         {
           headers: {
@@ -28,15 +29,10 @@ const SQLConnectScreen = () => {
           }
         }
       )
-      console.log(response);
+      alert(response);
     } catch (error) {
       console.log(error);
     }
-    // if (response.data) {
-    //   // setTables(response.data.tables);
-    // } else {
-    // }
-    // alert(response.data.message)
   }
 
   return (
@@ -53,7 +49,7 @@ const SQLConnectScreen = () => {
             <Form className='container px-5' onSubmit={handleSubmit}>
               <Form.Group className='row mb-1'>
                 <Form.Label className='col-3 my-auto'>Server Address</Form.Label>
-                <Form.Control name='serveraddress' className='col border-dark rounded-pill' type="text" placeholder="192.168.1.1" autoComplete="off" />
+                <Form.Control name='host' className='col border-dark rounded-pill' type="text" placeholder="192.168.1.1" autoComplete="off" />
               </Form.Group>
               <Form.Group className='row mb-1'>
                 <Form.Label className='col-3 my-auto'>Port</Form.Label>
