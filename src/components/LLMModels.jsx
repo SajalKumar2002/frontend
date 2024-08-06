@@ -3,7 +3,9 @@ import axios from '../http';
 import { Form, Spinner } from 'react-bootstrap';
 
 const LLMModels = ({ rounded, onChange, defaultValue }) => {
-    const [llmModels, setLlmModels] = useState()
+    const [llmModels, setLlmModels] = useState(
+        defaultValue == null ? [] : [defaultValue]
+    )
 
     const fetchModels = async () => {
         const response = await axios.get("/api/llm")
@@ -25,7 +27,7 @@ const LLMModels = ({ rounded, onChange, defaultValue }) => {
     return (
         <>
             <Form.Select name='existingmodel' defaultValue={defaultValue} className={`border-dark ${rounded}`} onChange={onChange}>
-                <option>Select a model</option>
+                <option value="">Select a model</option>
                 {llmModels.map((model, index) => (
                     <option
                         key={index}

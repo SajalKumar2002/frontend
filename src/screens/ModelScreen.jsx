@@ -10,14 +10,10 @@ import LLMModels from '../components/LLMModels';
 import axios from '../http';
 
 const ModelScreen = () => {
-  const { state } = useContext(DataSourceContext)
+  const { state, dispatch } = useContext(DataSourceContext)
   const [selectedOption, setSelectedOption] = useState("");
-  const [selectedModel, setSelectedModel] = useState();
+  const [existingSelectedModel, setExistingSelectedModel] = useState("");
   const [job, setJob] = useState();
-
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
-  }
 
   const handleExistingSubmit = async (event) => {
     event.preventDefault();
@@ -25,6 +21,7 @@ const ModelScreen = () => {
     if (response.data.success) {
       setJob(response.data.job);
     }
+    dispatch({ type: 'MODEL', payload: { model: existingSelectedModel } })
   }
 
   const handleNewSubmit = (event) => {
@@ -48,7 +45,7 @@ const ModelScreen = () => {
             value="existing"
             label="Select from existing models"
             checked={selectedOption === 'existing'}
-            onChange={handleOptionChange}
+            onChange={(e) => setSelectedOption(e.target.value)}
           />
         </div>
 
@@ -61,12 +58,12 @@ const ModelScreen = () => {
                   <div className="col-9">
                     <LLMModels
                       rounded="rounded-pill"
-                      onChange={setSelectedModel}
+                      onChange={(e) => setExistingSelectedModel(e.target.value)}
                     />
                   </div>
 
                   <div className="col-3 align-content-center text-end">
-                    <Button type='submit' className="rounded-pill px-4" size='sm'>Train</Button>
+                    <Button type='submit' className="rounded-pill px-4" disabled={existingSelectedModel.length == ""} size='sm'>Train</Button>
                   </div>
                 </Form.Group>
 
@@ -93,7 +90,7 @@ const ModelScreen = () => {
                 value="new"
                 label="Train a new model"
                 checked={selectedOption === 'new'}
-                onChange={handleOptionChange}
+                onChange={(e) => setSelectedOption(e.target.value)}
               />
             </div>
 
