@@ -21,6 +21,8 @@ function LoginForm() {
         } else {
             alert(response.data.message)
         }
+        // redirect("/data");
+
     }
 
     return (

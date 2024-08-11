@@ -17,11 +17,15 @@ const ModelScreen = () => {
 
   const handleExistingSubmit = async (event) => {
     event.preventDefault();
-    const response = await axios.get("/api/job/generate")
-    if (response.data.success) {
-      setJob(response.data.job);
+    try {
+      const response = await axios.get("/api/job/generate")
+      if (response.data.success) {
+        setJob(response.data.job);
+      }
+      dispatch({ type: 'MODEL', payload: { model: existingSelectedModel } })
+    } catch (error) {
+      console.log(error);
     }
-    dispatch({ type: 'MODEL', payload: { model: existingSelectedModel } })
   }
 
   const handleNewSubmit = (event) => {

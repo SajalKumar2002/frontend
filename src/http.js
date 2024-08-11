@@ -5,7 +5,7 @@ const http = axios.create({
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': 'localhost://5000',
   }, withCredentials: true,
 })
 

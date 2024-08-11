@@ -1,32 +1,31 @@
-import React from 'react';
-import { Form, Nav } from 'react-bootstrap';
+import React, { useContext } from 'react';
+import { Nav } from 'react-bootstrap';
+
+import LLMModels from './LLMModels';
+import DataSourceContext from '../context/Source.Context';
 
 const SidePanel = () => {
+    const { state } = useContext(DataSourceContext);
 
     return (
-        <div className="col-2 bg-history-inferenceScreen p-3 overflow-auto text-white d-flex flex-column h-custom">
+        <div className="col-2 bg-history-inferenceScreen p-3 overflow-auto text-white d-flex flex-column h-custom" >
 
-            <Form.Select className=''>
-                <option value="1">Model 1</option>
-                <option value="2">Model 2</option>
-                <option value="3">Model 3</option>
-            </Form.Select>
-            <div>
-                <hr />
-                <p className='fs-5'>Recent</p>
-            </div>
+            <LLMModels
+            // defaultValue={state ? state.source : ""} 
+            />
 
-            <div className='px-2 text-light fs-6'>
-                <Nav variant="pills" className='d-flex flex-column'>
-                    <div className="overflow-auto scrollbar-hide" style={{ maxHeight: "30rem" }}>
-                        {[1, 2].map((value, index) => (
-                            <Nav.Item>
-                                <Nav.Link eventKey={index} className='text-white'>Chat {value}</Nav.Link>
-                            </Nav.Item>
-                        ))}
-                    </div>
-                </Nav>
-            </div>
+            <Nav variant="pills" className='d-flex flex-column'>
+                <div>
+                    <hr />
+                    <Nav.Item>
+                        <Nav.Link className='text-white active'>New Chat</Nav.Link>
+                    </Nav.Item>
+                    <p className='mt-2 fs-5'>Recent</p>
+                </div>
+
+
+
+            </Nav>
 
         </div>
     )

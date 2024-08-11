@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+
 import { Form, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios';
+import axios from '../https';
 
 import TablePreview from '../components/TablePreview.Connect';
 
@@ -19,9 +20,8 @@ const SQLConnectScreen = () => {
         "port": event.target.port.value,
         "database": event.target.database.value
       };
-      console.log(data);
       const response = await axios.post(
-        "https://c182-34-32-217-62.ngrok-free.app/set_db_config",
+        "/set_db_config",
         data,
         {
           headers: {
@@ -29,9 +29,10 @@ const SQLConnectScreen = () => {
           }
         }
       )
-      alert(response);
+      alert(response.data.message);
     } catch (error) {
       console.log(error);
+      alert("Error Connecting", error);
     }
   }
 
@@ -48,7 +49,7 @@ const SQLConnectScreen = () => {
             <h3 className='mb-4'><span className="text-decoration-underline link-offset-1">Connect to SQL DB</span></h3>
             <Form className='container px-5' onSubmit={handleSubmit}>
               <Form.Group className='row mb-1'>
-                <Form.Label className='col-3 my-auto'>Server Address</Form.Label>
+                <Form.Label className='col-3 my-auto'>Host</Form.Label>
                 <Form.Control name='host' className='col border-dark rounded-pill' type="text" placeholder="192.168.1.1" autoComplete="off" />
               </Form.Group>
               <Form.Group className='row mb-1'>

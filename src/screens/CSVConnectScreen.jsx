@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import axios from '../http';
+// import axios from '../http';
+import axios from 'axios'
 import TablePreview from '../components/TablePreview.Connect';
 import { Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -44,7 +45,7 @@ const CSVConnectScreen = () => {
     };
 
     return (
-        <div className='container mt-5' style={{height: "38rem"}}>
+        <div className='container mt-5' style={{ height: "38rem" }}>
             <div className='row'>
                 <div className='col-7 p-2'>
                     <h3 className='mb-4'>
