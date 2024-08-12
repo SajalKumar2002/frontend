@@ -49,6 +49,7 @@ const InferenceScreen = () => {
       }
     )
     console.log(response.data);
+    setLoading(false);
     return response.data.response;
   }
 
