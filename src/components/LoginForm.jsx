@@ -11,6 +11,7 @@ function LoginForm() {
 
     const HandleSubmit = async (event) => {
         event.preventDefault();
+        console.log("response");
         const response = await axios.post('/api/user/login', {
             email: event.target.email.value,
             password: event.target.password.value
