@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-// import axios from '../http';
-import axios from 'axios'
+import http from '../http';
+import axios from 'axios';
 import TablePreview from '../components/TablePreview.Connect';
 import { Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -27,22 +27,38 @@ const CSVConnectScreen = () => {
             formData.append(`files`, file);
         });
         try {
-            const response = await axios.post('/api/data/csv', formData, {
+            const response = await http.post('/api/data/csv', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            setSelectedFiles([])
-            setAcceptedFiles((prevAccFile) => (
-                [
-                    ...prevAccFile,
-                    ...response.data
-                ]
-            ));
+            getTables(response.data, "ranjit_test_2");
         } catch (error) {
             alert('Error uploading files:', error);
         }
     };
+
+    const getTables = async (URL, DB_name) => {
+        const response = await axios.post(
+            "http://13.233.162.238:5000/upload_csv",
+            {
+                s3_urls: URL,
+                db_name: DB_name
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }
+        );
+        setSelectedFiles([])
+        setAcceptedFiles((prevAccFile) => (
+            [
+                ...prevAccFile,
+                ...response.data
+            ]
+        ));
+    }
 
     return (
         <div className='container mt-5' style={{ height: "38rem" }}>

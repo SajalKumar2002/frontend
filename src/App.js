@@ -27,34 +27,32 @@ function App() {
 
   return (
     // <UserProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<LoginScreen />} />
+    <Router>
+      <Routes>
+        <Route path="/" element={<LoginScreen />} />
 
-          {/* <Route element={<ProtectedRoute />} > */}
-            <Route element={<NavBar />} >
+        {/* <Route element={<ProtectedRoute />} > */}
+        <Route element={<NavBar />} >
 
-              <Route element={<Footer />} >
+          <Route element={<Footer />} >
 
-                <Route path="/model" element={<ModelScreen />} />
-                <Route path="/processing" element={<ProcessingScreen />} />
-                <Route path="/data" element={<SourceScreen />} />
-                <Route path="/data/sql" element={<SQLConnectScreen />} />
-                <Route path="/data/csv" element={<CSVConnectScreen />} />
-                <Route path="/data/pdf" element={<PDFConnectScreen />} />
-                {/* <Route path="/data/clip" element={<PDFConnectScreen />} /> */}
-                {/* <Route path="/data/s3" element={<PDFConnectScreen />} /> */}
-                {/* <Route path="/data/owntext" element={<PDFConnectScreen />} /> */}
+            <Route path="/model" element={<ModelScreen />} />
+            <Route path="/processing" element={<ProcessingScreen />} />
+            <Route path="/data" element={<SourceScreen />} />
+            <Route path="/data/sql" element={<SQLConnectScreen />} />
+            <Route path="/data/csv" element={<CSVConnectScreen />} />
+            <Route path="/data/pdf" element={<PDFConnectScreen />} />
+            {/* <Route path="/data/clip" element={<PDFConnectScreen />} /> */}
+            {/* <Route path="/data/s3" element={<PDFConnectScreen />} /> */}
+            {/* <Route path="/data/owntext" element={<PDFConnectScreen />} /> */}
+          </Route>
 
+          <Route path="/inference" element={<InferenceScreen />} />
+        </Route>
 
-              </Route>
-
-              <Route path="/inference" element={<InferenceScreen />} />
-            </Route>
-
-          {/* </Route> */}
-        </Routes>
-      </Router>
+        {/* </Route> */}
+      </Routes>
+    </Router>
     // </UserProvider>
   );
 }
