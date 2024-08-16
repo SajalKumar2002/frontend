@@ -32,33 +32,17 @@ const CSVConnectScreen = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            getTables(response.data, "ranjit_test_2");
+            setSelectedFiles([])
+            setAcceptedFiles((prevAccFile) => (
+                [
+                    ...prevAccFile,
+                    ...response.data
+                ]
+            ));
         } catch (error) {
             alert('Error uploading files:', error);
         }
     };
-
-    const getTables = async (URL, DB_name) => {
-        const response = await axios.post(
-            "http://13.233.162.238:5000/upload_csv",
-            {
-                s3_urls: URL,
-                db_name: DB_name
-            },
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            }
-        );
-        setSelectedFiles([])
-        setAcceptedFiles((prevAccFile) => (
-            [
-                ...prevAccFile,
-                ...response.data
-            ]
-        ));
-    }
 
     return (
         <div className='container mt-5' style={{ height: "38rem" }}>
