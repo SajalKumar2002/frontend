@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import axios from '../https';
+import https from '../https';
+import axios from 'axios';
 import { Spinner } from 'react-bootstrap';
 import SidePanel from '../components/SidePanel';
 // import PromptBar from '../components/PromptBar';
@@ -21,7 +22,7 @@ const InferenceScreen = () => {
       }
       setPromptText("");
       setCurrentQuestion(data);
-      const response = await axios.post(
+      const response = await https.post(
         '/generate_sql_query',
         data,
         {
@@ -40,16 +41,19 @@ const InferenceScreen = () => {
   }
 
   const handleQuery = async (query) => {
-    const response = await axios.post("/generate_response",
-      { sql_query: query },
+    const response = await axios.post("https://e1e8-34-80-82-25.ngrok-free.app/generate_response",
+      {
+        sql_query: query,
+        question: currentQuestion
+      },
       {
         headers: {
           'Content-Type': 'application/json',
         }
       }
     )
-    console.log(response.data);
-    setLoading(false);
+    // console.log(response.data);
+    // setLoading(false);
     return response.data.response;
   }
 
