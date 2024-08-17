@@ -4,6 +4,7 @@ import https from '../https';
 import axios from 'axios';
 import { Spinner } from 'react-bootstrap';
 import SidePanel from '../components/SidePanel';
+
 // import PromptBar from '../components/PromptBar';
 // import ResponseScreen from '../components/ResponseScreen';
 
@@ -16,27 +17,38 @@ const InferenceScreen = () => {
 
   const handleKeyDown = async (event) => {
     if (event.key === 'Enter') {
-      setLoading(true);
-      const data = {
-        "question": promptText
-      }
-      setPromptText("");
-      setCurrentQuestion(data);
-      const response = await https.post(
-        '/generate_sql_query',
-        data,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          }
+      try {
+        setLoading(true);
+        const data = {
+          "question": promptText
         }
-      )
-      // const chatResponse = handleQuery(response.data.sql_query);
-      setCurrentResponse({
-        // answer: chatResponse
-        answer: response.data.sql_query
-      })
-      setLoading(false);
+        setPromptText("");
+        setCurrentQuestion(data);
+        const response = await https.post(
+          '/generate_sql_query',
+          data,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          }
+        )
+        if (response.data.sql_query) {
+          // const chatResponse = handleQuery(response.data.sql_query);
+          setCurrentResponse({
+            // answer: chatResponse
+            answer: response.data.sql_query
+          })
+          setLoading(false);
+        } else {
+          setCurrentResponse({
+            answer: response.data.error
+          })
+        }
+      } catch (error) {
+        console.log(error.response);
+      }
+
     }
   }
 
