@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-import https from '../https';
-import axios from 'axios';
+import api1 from '../api1';
+import api2 from '../api2';
+
 import { Spinner } from 'react-bootstrap';
 import SidePanel from '../components/SidePanel';
-
-// import PromptBar from '../components/PromptBar';
-// import ResponseScreen from '../components/ResponseScreen';
 
 const InferenceScreen = () => {
   const [prevChats, setPrevChats] = useState([]);
@@ -23,7 +21,7 @@ const InferenceScreen = () => {
           "question": promptText
         }
         setCurrentQuestion(data);
-        const response = await https.post(
+        const response = await api1.post(
           '/generate_sql_query',
           data,
           {
@@ -60,7 +58,7 @@ const InferenceScreen = () => {
     }
     setPromptText("");
 
-    const response = await axios.post("https://6361-34-91-153-158.ngrok-free.app/generate_response",
+    const response = await api2.post("https://6361-34-91-153-158.ngrok-free.app/generate_response",
       data,
       {
         headers: {

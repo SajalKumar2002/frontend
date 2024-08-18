@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import http from '../http';
-import axios from 'axios';
 import TablePreview from '../components/TablePreview.Connect';
 import { Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';

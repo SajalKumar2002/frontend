@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, Modal } from 'react-bootstrap';
-
-import GreenCheck from '../svg/GreenCheck.svg'
+import { Form, Button } from 'react-bootstrap';
 
 import axios from '../http';
 
@@ -11,7 +9,6 @@ function LoginForm() {
 
     const HandleSubmit = async (event) => {
         event.preventDefault();
-        console.log("response");
         const response = await axios.post('/api/user/login', {
             email: event.target.email.value,
             password: event.target.password.value
@@ -22,8 +19,6 @@ function LoginForm() {
         } else {
             alert(response.data.message)
         }
-        // redirect("/data");
-
     }
 
     return (
