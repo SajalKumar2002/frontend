@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 
 import { Form, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import axios from '../https';
+import https from '../https';
+import axios from 'axios';
 
 import TablePreview from '../components/TablePreview.Connect';
 
@@ -20,8 +21,11 @@ const SQLConnectScreen = () => {
         "port": event.target.port.value,
         "database": event.target.database.value
       };
+
       const response = await axios.post(
-        "/set_db_config",
+        "https://6361-34-91-153-158.ngrok-free.app/set_db_config",
+        // const response = await https.post(
+        //   "/set_db_config",
         data,
         {
           headers: {

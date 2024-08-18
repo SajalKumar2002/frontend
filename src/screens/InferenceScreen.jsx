@@ -22,7 +22,6 @@ const InferenceScreen = () => {
         const data = {
           "question": promptText
         }
-        setPromptText("");
         setCurrentQuestion(data);
         const response = await https.post(
           '/generate_sql_query',
@@ -33,11 +32,12 @@ const InferenceScreen = () => {
             }
           }
         )
+
         if (response.data.sql_query) {
-          // const chatResponse = handleQuery(response.data.sql_query);
+          const chatResponse = await handleQuery(response.data.sql_query);
           setCurrentResponse({
-            // answer: chatResponse
-            answer: response.data.sql_query
+            answer: chatResponse
+            // answer: response.data.sql_query
           })
           setLoading(false);
         } else {
@@ -45,6 +45,7 @@ const InferenceScreen = () => {
             answer: response.data.error
           })
         }
+
       } catch (error) {
         console.log(error.response);
       }
@@ -53,19 +54,20 @@ const InferenceScreen = () => {
   }
 
   const handleQuery = async (query) => {
-    const response = await axios.post("https://e1e8-34-80-82-25.ngrok-free.app/generate_response",
-      {
-        sql_query: query,
-        question: currentQuestion
-      },
+    const data = {
+      "question": promptText,
+      "sql_query": query
+    }
+    setPromptText("");
+
+    const response = await axios.post("https://6361-34-91-153-158.ngrok-free.app/generate_response",
+      data,
       {
         headers: {
           'Content-Type': 'application/json',
         }
       }
     )
-    // console.log(response.data);
-    // setLoading(false);
     return response.data.response;
   }
 
@@ -115,11 +117,16 @@ const InferenceScreen = () => {
                     <></>
                   }
 
-                  <div className="d-flex justify-content-end">
-                    <div className="text-end col-7">
-                      <p>{currentQuestion ? currentQuestion.question : ""}</p>
+                  {currentQuestion ?
+                    <div className="d-flex justify-content-end">
+                      <div className="text-end col-7">
+                        <p>{currentQuestion.question}</p>
+                      </div>
                     </div>
-                  </div>
+                    :
+                    <></>
+                  }
+
                   <div className="text-start col-7">
                     {loading ?
                       <div>
@@ -132,9 +139,11 @@ const InferenceScreen = () => {
                     }
                   </div>
                 </div>
+
               </div>
             </div>
 
+            {/* PROMPT BAR */}
             <div className="w-75 text-center mx-auto pb-4">
               <input
                 type='text'
