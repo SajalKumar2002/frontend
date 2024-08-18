@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.2aa21ead.css",
-    "main.js": "/static/js/main.ca28d6f8.js",
+    "main.js": "/static/js/main.0f1d73af.js",
     "static/media/S3Bucket.svg": "/static/media/S3Bucket.a1c1276e81e227caf71dd4b8326cff8b.svg",
     "static/media/hero-image.svg": "/static/media/hero-image.34734587f0710d0634bb.svg",
     "static/media/AI-Models.svg": "/static/media/AI-Models.9af6fc48ca6c292c2c787570fd6be823.svg",
@@ -10,15 +10,14 @@
     "static/media/PDF.svg": "/static/media/PDF.91af5246a0ed9df73d015318fe576f24.svg",
     "static/media/Brandlogo.svg": "/static/media/Brandlogo.e8fb3293b0b5d446865ae4e4c8b4ea1f.svg",
     "static/media/VideoCamera.svg": "/static/media/VideoCamera.e90257ba317bddaaa961f73409f42d5b.svg",
-    "static/media/GreenCheck.svg": "/static/media/GreenCheck.d4c7d358318a0ce2b17faa6bb1f91b11.svg",
     "static/media/OwnModel.svg": "/static/media/OwnModel.ec5abd0b9d7ffdb1655dcbb6b21c148e.svg",
     "static/media/FileIcon.svg": "/static/media/FileIcon.f7672192e4a713da4e9e52c3640612b8.svg",
     "index.html": "/index.html",
     "main.2aa21ead.css.map": "/static/css/main.2aa21ead.css.map",
-    "main.ca28d6f8.js.map": "/static/js/main.ca28d6f8.js.map"
+    "main.0f1d73af.js.map": "/static/js/main.0f1d73af.js.map"
   },
   "entrypoints": [
     "static/css/main.2aa21ead.css",
-    "static/js/main.ca28d6f8.js"
+    "static/js/main.0f1d73af.js"
   ]
 }
