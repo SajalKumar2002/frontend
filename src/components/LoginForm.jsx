@@ -2,14 +2,14 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 
-import axios from '../http';
+import http from '../http';
 
 function LoginForm() {
     const redirect = useNavigate();
 
     const HandleSubmit = async (event) => {
         event.preventDefault();
-        const response = await axios.post('/api/user/login', {
+        const response = await http.post('/api/user/login', {
             email: event.target.email.value,
             password: event.target.password.value
         })
