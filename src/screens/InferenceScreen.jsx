@@ -45,7 +45,7 @@ const InferenceScreen = () => {
         }
 
       } catch (error) {
-        console.log(error.response);
+        console.log(error);
       }
 
     }
@@ -58,7 +58,7 @@ const InferenceScreen = () => {
     }
     setPromptText("");
 
-    const response = await api2.post("https://6361-34-91-153-158.ngrok-free.app/generate_response",
+    const response = await api2.post("/generate_response",
       data,
       {
         headers: {
