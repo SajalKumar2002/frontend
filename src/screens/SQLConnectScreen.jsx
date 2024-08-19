@@ -12,16 +12,16 @@ const SQLConnectScreen = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const data = {
+      "user": event.target.username.value,
+      "password": event.target.password.value,
+      "host": event.target.host.value,
+      "port": event.target.port.value,
+      "database": event.target.database.value
+    };
     try {
-      const data = {
-        "user": event.target.username.value,
-        "password": event.target.password.value,
-        "host": event.target.host.value,
-        "port": event.target.port.value,
-        "database": event.target.database.value
-      };
 
-      const response = await api1.post(
+      const responseAP1 = await api1.post(
         "/set_db_config",
         data,
         {
@@ -30,7 +30,17 @@ const SQLConnectScreen = () => {
           }
         }
       )
-      alert(response.data.message);
+      const responseAP2 = await api2.post(
+        "/set_db_config",
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+
+      alert(responseAP1.data.message === responseAP2.data.message ? "Connection established with the Database" : "Connection Error");
     } catch (error) {
       console.log(error);
       alert("Error Connecting", error);

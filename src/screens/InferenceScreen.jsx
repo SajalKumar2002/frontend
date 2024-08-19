@@ -28,18 +28,20 @@ const InferenceScreen = () => {
           }
         });
 
-        // const chatResponse = await handleQuery(response.data.sql_query);
-        setCurrentResponse({ answer: response.data.sql_query });
+        const chatResponse = await handleQuery(response.data.sql_query);
+        console.log(chatResponse);
+        // setCurrentResponse({ answer: response.data.sql_query });
+        setCurrentResponse({ answer: chatResponse });
 
         setPrevChats(prevChat => [
           ...prevChat,
           {
             ...data,
-            answer: response.data.sql_query
+            // answer: response.data.sql_query
+            answer: chatResponse
           }
         ]);
 
-        setPromptText("");
         setCurrentQuestion("");
         setCurrentResponse("");
       } catch (error) {
@@ -53,7 +55,6 @@ const InferenceScreen = () => {
           }
         ]);
 
-        setPromptText("");
         setCurrentQuestion("");
         setCurrentResponse("");
       } finally {
