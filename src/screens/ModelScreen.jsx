@@ -33,6 +33,16 @@ const ModelScreen = () => {
     console.log("handleNewModelSubmit Submitted")
   }
 
+  if (state.source === "") {
+    return (
+      <div className='text-center container' style={{ height: "39rem" }}>
+        <div className='row py-4'>
+          <h5>ERROR:<span className='fs-5 fw-normal'> You have not chosen the Data Source.</span></h5>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <>
       <div className='container' style={{ height: "39rem" }}>

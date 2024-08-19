@@ -9,45 +9,56 @@ import SidePanel from '../components/SidePanel';
 const InferenceScreen = () => {
   const [prevChats, setPrevChats] = useState([]);
   const [promptText, setPromptText] = useState("");
-  const [currentQuestion, setCurrentQuestion] = useState();
-  const [currentResponse, setCurrentResponse] = useState();
+  const [currentQuestion, setCurrentQuestion] = useState("");
+  const [currentResponse, setCurrentResponse] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleKeyDown = async (event) => {
     if (event.key === 'Enter') {
+      setLoading(true);
+      const data = {
+        question: promptText
+      };
+      setCurrentQuestion(data);
+
       try {
-        setLoading(true);
-        const data = {
-          "question": promptText
-        }
-        setCurrentQuestion(data);
-        const response = await api1.post(
-          '/generate_sql_query',
-          data,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            }
+        const response = await api1.post('/generate_sql_query', data, {
+          headers: {
+            'Content-Type': 'application/json',
           }
-        )
+        });
 
-        if (response.data.sql_query) {
-          const chatResponse = await handleQuery(response.data.sql_query);
-          setCurrentResponse({
-            answer: chatResponse
-            // answer: response.data.sql_query
-          })
-          setLoading(false);
-        } else {
-          setCurrentResponse({
-            answer: response.data.error
-          })
-        }
+        // const chatResponse = await handleQuery(response.data.sql_query);
+        setCurrentResponse({ answer: response.data.sql_query });
 
+        setPrevChats(prevChat => [
+          ...prevChat,
+          {
+            ...data,
+            answer: response.data.sql_query
+          }
+        ]);
+
+        setPromptText("");
+        setCurrentQuestion("");
+        setCurrentResponse("");
       } catch (error) {
         console.log(error);
-      }
+        setCurrentResponse({ answer: error.response?.data?.error || "An error occurred" });
+        setPrevChats(prevChat => [
+          ...prevChat,
+          {
+            ...data,
+            answer: error.response?.data?.error || "An error occurred"
+          }
+        ]);
 
+        setPromptText("");
+        setCurrentQuestion("");
+        setCurrentResponse("");
+      } finally {
+        setLoading(false);
+      }
     }
   }
 
@@ -69,18 +80,6 @@ const InferenceScreen = () => {
     return response.data.response;
   }
 
-  useEffect(() => {
-    setPrevChats((prevChat) => [
-      ...prevChat,
-      {
-        ...currentQuestion,
-        ...currentResponse
-      }
-    ])
-    setCurrentQuestion();
-    setCurrentResponse();
-  }, [currentResponse])
-
   return (
     <>
       <div className="container-fluid">
@@ -96,11 +95,12 @@ const InferenceScreen = () => {
 
                 <div>
 
-                  {prevChats.length > 0 ?
+                  {prevChats && prevChats.length > 0 ? (
                     <>
                       {prevChats.map((prevChat, index) => (
                         <div key={index}>
                           <div className="d-flex justify-content-end">
+
                             <div className="text-end col-7">
                               <p>{prevChat.question}</p>
                             </div>
@@ -108,18 +108,23 @@ const InferenceScreen = () => {
                           <div className="text-start col-7">
                             <p>{prevChat.answer}</p>
                           </div>
+
                         </div>
                       ))}
                     </>
-                    :
-                    <></>
+                  )
+                    : (
+                      <></>
+                    )
                   }
 
                   {currentQuestion ?
                     <div className="d-flex justify-content-end">
+
                       <div className="text-end col-7">
                         <p>{currentQuestion.question}</p>
                       </div>
+
                     </div>
                     :
                     <></>

@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import axios from '../http';
 
@@ -9,7 +9,7 @@ import { Navbar, Nav, Dropdown } from 'react-bootstrap';
 import Brandlogo from '../svg/Brandlogo.svg';
 
 const NavBar = () => {
-  const { state } = useContext(DataSourceContext);
+  const { dispatch } = useContext(DataSourceContext);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const NavBar = () => {
     try {
       const response = await axios.get("/api/user/logout");
       if (response.status === 200) {
-        localStorage.clear();
+        dispatch({type: "CLEAR"})
         navigate('/');
       }
     } catch (error) {
@@ -58,7 +58,7 @@ const NavBar = () => {
         <div className='container ms-4'>
 
           <Navbar.Brand href="/">
-            <img src={Brandlogo} alt='LLMBOXx' className='Brand-logo' />
+            <img src={Brandlogo} alt='LLMBOXX' className='Brand-logo' />
           </Navbar.Brand>
 
           <Nav variant="tabs" activeKey={activePath}>

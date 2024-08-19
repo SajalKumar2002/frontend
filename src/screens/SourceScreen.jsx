@@ -21,6 +21,7 @@ const SourceScreen = () => {
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
+
   const handleNext = (event) => {
     event.preventDefault();
     dispatch({ type: 'SOURCE', payload: { source: selectedValue } })

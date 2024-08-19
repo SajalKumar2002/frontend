@@ -5,7 +5,6 @@ const DataSourceContext = createContext();
 function reducer(state, action) {
     switch (action.type) {
         case "SOURCE":
-            localStorage.clear();
             localStorage.setItem('source', action.payload.source)
             return {
                 ...state,
@@ -23,6 +22,13 @@ function reducer(state, action) {
                 ...state,
                 model: action.payload.model
             };
+        case "CLEAR":
+            localStorage.clear();
+            return {
+                source: "",
+                model: "",
+                type: "",
+            }
         default:
             return state;
     }
