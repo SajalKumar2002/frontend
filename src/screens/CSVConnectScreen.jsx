@@ -39,7 +39,8 @@ const CSVConnectScreen = () => {
                 ]
             ));
         } catch (error) {
-            alert('Error uploading files:', error);
+            console.log(error);
+            alert('Error uploading files');
         }
     };
 
