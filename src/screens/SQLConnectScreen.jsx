@@ -48,7 +48,7 @@ const SQLConnectScreen = () => {
   }
 
   return (
-    <>
+    <div style={{ height: "38rem" }}>
       <div className='d-flex justify-content-between px-4 py-2'>
         <Button variant='primary' onClick={() => redirect('/data')}>{"<"}Back</Button>
         <Button variant='primary' onClick={() => redirect('/model')}>Next{">"}</Button>
@@ -106,7 +106,7 @@ const SQLConnectScreen = () => {
           } */}
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
