@@ -4,7 +4,6 @@ import { Form, Table } from 'react-bootstrap';
 import http from '../http';
 
 const ProcessingScreen = () => {
-  
   const [records, setRecords] = useState([]);
   const [result, setResult] = useState([]);
 
