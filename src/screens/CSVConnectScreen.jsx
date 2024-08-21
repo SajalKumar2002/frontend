@@ -3,10 +3,14 @@ import http from '../http';
 import TablePreview from '../components/TablePreview.Connect';
 import { Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { Spinner } from 'react-bootstrap';
 
 const CSVConnectScreen = () => {
-    const [acceptedFiles, setAcceptedFiles] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [selectedFiles, setSelectedFiles] = useState([]);
+    const [acceptedFiles, setAcceptedFiles] = useState(
+        localStorage.getItem('csv-files') ? JSON.parse(localStorage.getItem('csv-tables')) : []
+    ); //Updated Files
     const [selectedFileIndex, setSelectedFileIndex] = useState();
 
     const handleFileChange = (event) => {
@@ -20,6 +24,7 @@ const CSVConnectScreen = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setLoading(true);
         const formData = new FormData();
 
         selectedFiles.forEach((file) => {
@@ -31,16 +36,20 @@ const CSVConnectScreen = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            setSelectedFiles([])
+            setSelectedFiles([]);
             setAcceptedFiles((prevAccFile) => (
                 [
                     ...prevAccFile,
-                    ...response.data
+                    ...response?.data?.tables
                 ]
             ));
+            localStorage.setItem("csv-tables", JSON.stringify(acceptedFiles));
+            localStorage.setItem("csv-db", response?.data?.database);
         } catch (error) {
-            console.log(error);
-            alert('Error uploading files');
+            alert('Error:', error.response.data.error);
+            console.log(error.response.data.error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -62,18 +71,23 @@ const CSVConnectScreen = () => {
                                     ))}
                                 </ol>
                                 <p>Uploaded Files</p>
-                                <ol>
-                                    {acceptedFiles.map((file, index) => (
-                                        <li key={index}>{file.name}</li>
-                                    ))}
-                                </ol>
+                                {loading ?
+                                    <div>
+                                        <Spinner animation="border" role="status">
+                                            <span className="visually-hidden">Loading...</span>
+                                        </Spinner>
+                                    </div>
+                                    :
+                                    <ol>
+                                        {acceptedFiles.map((file, index) => (
+                                            <li key={index}>{file.name}</li>
+                                        ))}
+                                    </ol>
+                                }
                             </div>
                         </section>
-                        <div className='container d-flex justify-content-around'>
-                            <Button type='submit'>Upload</Button>
-                            <Link to='/model' className={`btn btn-primary ${acceptedFiles.length === 0 ? 'disabled' : ''}`}>
-                                Start Training
-                            </Link>
+                        <div className='container d-flex'>
+                            <Button type='submit' className={`btn btn-primary ${selectedFiles.length === 0 ? 'disabled' : ''}`}>Upload</Button>
                         </div>
                     </form>
                 </div>

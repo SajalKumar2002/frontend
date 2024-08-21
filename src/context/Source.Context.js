@@ -6,14 +6,10 @@ function reducer(state, action) {
     switch (action.type) {
         case "SOURCE":
             localStorage.setItem('source', action.payload.source)
-            return {
-                ...state,
-                source: action.payload.source
-            };
-        case "TYPE":
             localStorage.setItem('type', action.payload.type)
             return {
                 ...state,
+                source: action.payload.source,
                 type: action.payload.type
             };
         case "MODEL":

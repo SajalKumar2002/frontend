@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from '../http';
 import { Form, Spinner } from 'react-bootstrap';
 
+import DataSourceContext from '../context/Source.Context';
+
 const LLMModels = ({ rounded, onChange, defaultValue }) => {
+    const { state } = useContext(DataSourceContext);
+
     const [llmModels, setLlmModels] = useState(
         defaultValue == null ? [] : [defaultValue]
     )
@@ -38,6 +42,7 @@ const LLMModels = ({ rounded, onChange, defaultValue }) => {
             </Form.Select>
         </>
     )
+    
 }
 
 export default LLMModels

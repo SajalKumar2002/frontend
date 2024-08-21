@@ -24,7 +24,8 @@ const SourceScreen = () => {
 
   const handleNext = (event) => {
     event.preventDefault();
-    dispatch({ type: 'SOURCE', payload: { source: selectedValue } })
+    const TYPE = selectedValue === 'sql' || selectedValue === 'csv' ? "structured" : "unstructured";
+    dispatch({ type: 'SOURCE', payload: { source: selectedValue, type: TYPE } })
     redirect(`/data/${selectedValue}`)
   }
 

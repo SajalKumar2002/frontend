@@ -9,12 +9,10 @@ import { Navbar, Nav, Dropdown } from 'react-bootstrap';
 import Brandlogo from '../svg/Brandlogo.svg';
 
 const NavBar = () => {
-  const { dispatch } = useContext(DataSourceContext);
+  const { state, dispatch } = useContext(DataSourceContext);
 
   const location = useLocation();
   const navigate = useNavigate();
-
-  const tabs = ["data", "model", "processing", "inference"];
 
   const checkUser = async () => {
     try {
@@ -37,7 +35,7 @@ const NavBar = () => {
     try {
       const response = await axios.get("/api/user/logout");
       if (response.status === 200) {
-        dispatch({type: "CLEAR"})
+        dispatch({ type: "CLEAR" })
         navigate('/');
       }
     } catch (error) {
@@ -62,11 +60,24 @@ const NavBar = () => {
           </Navbar.Brand>
 
           <Nav variant="tabs" activeKey={activePath}>
-            {tabs.map((tab, index) => (
-              <Nav.Item key={index}>
-                <Nav.Link href={`/${tab}`} className={`border-3 text-uppercase`} >{tab}</Nav.Link>
-              </Nav.Item>
-            ))}
+            <Nav.Item>
+              <Nav.Link href="/data" className={`border-3 text-uppercase`}>DATA</Nav.Link>
+            </Nav.Item>
+            {state.type === 'structured' ?
+              <></>
+              :
+              <>
+                <Nav.Item>
+                  <Nav.Link href="/model" className={`border-3 text-uppercase`}>MODEL</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link href="/processing" className={`border-3 text-uppercase`}>PROCESSING</Nav.Link>
+                </Nav.Item>
+              </>
+            }
+            <Nav.Item>
+              <Nav.Link href="/inference" className={`border-3 text-uppercase`}>INFERENCE</Nav.Link>
+            </Nav.Item>
           </Nav>
 
         </div>

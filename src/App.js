@@ -26,12 +26,10 @@ import InferenceScreen from './screens/InferenceScreen';
 function App() {
 
   return (
-    // <UserProvider>
     <Router>
       <Routes>
         <Route path="/" element={<LoginScreen />} />
 
-        {/* <Route element={<ProtectedRoute />} > */}
         <Route element={<NavBar />} >
 
           <Route element={<Footer />} >
@@ -42,18 +40,13 @@ function App() {
             <Route path="/data/sql" element={<SQLConnectScreen />} />
             <Route path="/data/csv" element={<CSVConnectScreen />} />
             <Route path="/data/pdf" element={<PDFConnectScreen />} />
-            {/* <Route path="/data/clip" element={<PDFConnectScreen />} /> */}
-            {/* <Route path="/data/s3" element={<PDFConnectScreen />} /> */}
-            {/* <Route path="/data/owntext" element={<PDFConnectScreen />} /> */}
           </Route>
 
           <Route path="/inference" element={<InferenceScreen />} />
         </Route>
 
-        {/* </Route> */}
       </Routes>
     </Router>
-    // </UserProvider>
   );
 }
 
