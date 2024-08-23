@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { http } from '../http';
 
@@ -55,7 +55,6 @@ const CSVConnectScreen = () => {
                     ...response?.data?.tables
                 ]
             ));
-            localStorage.setItem('csv-table', JSON.stringify(acceptedFiles));
             localStorage.setItem("csv-db", response.data.database);
             alert("File Uploaded Successfully");
         } catch (error) {
@@ -71,8 +70,12 @@ const CSVConnectScreen = () => {
             selectedFiles.filter((selectedFile) => (
                 file.name.includes(selectedFile.name) ? null : file
             ))
-          )
+        )
     }
+
+    useEffect(() => {
+        localStorage.setItem('csv-table', JSON.stringify(acceptedFiles));
+    }, [acceptedFiles])
 
     return (
         <div className='container mt-5' style={{ height: "38rem" }}>
