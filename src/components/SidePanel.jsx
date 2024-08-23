@@ -7,18 +7,33 @@ import DataSourceContext from '../context/Source.Context';
 const SidePanel = () => {
     const { state } = useContext(DataSourceContext);
 
+    const handleNewChat = async () => {
+        try {
+            localStorage.removeItem("chat");
+            window.location.reload();
+        } catch (error) {
+            console.log(error);
+            alert("Some error occured")
+        }
+    }
+
     return (
         <div className="col-2 bg-history-inferenceScreen p-3 overflow-auto text-white d-flex flex-column h-custom" >
 
-            <LLMModels
-                defaultValue={state ? state.source : ""}
-            />
-
+            {state?.type === "unstructured" ?
+                <>
+                    <LLMModels
+                        defaultValue={state ? state.source : ""}
+                    />
+                    <hr />
+                </>
+                :
+                <></>
+            }
             <Nav variant="pills" className='d-flex flex-column'>
                 <div>
-                    <hr />
                     <Nav.Item>
-                        <Nav.Link className='text-white active'>New Chat</Nav.Link>
+                        <Nav.Link className='text-white active' onClick={handleNewChat}>New Chat</Nav.Link>
                     </Nav.Item>
                     <p className='mt-2 fs-5'>Recent</p>
                 </div>

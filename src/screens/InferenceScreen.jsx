@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { api1, api2, api3 } from '../http';
 
@@ -10,7 +10,9 @@ import SidePanel from '../components/SidePanel';
 const InferenceScreen = () => {
   const { state } = useContext(DataSourceContext);
 
-  const [prevChats, setPrevChats] = useState([]);
+  const [prevChats, setPrevChats] = useState(
+    localStorage.getItem("chat") ? JSON.parse(localStorage.getItem('chat')) : []
+  );
   const [promptText, setPromptText] = useState("");
   const [currentQuestion, setCurrentQuestion] = useState("");
   const [currentResponse, setCurrentResponse] = useState("");
@@ -125,6 +127,10 @@ const InferenceScreen = () => {
       return null;
     }
   }
+
+  useEffect(() => {
+    localStorage.setItem("chat", JSON.stringify(prevChats));
+  }, [prevChats])
 
   return (
     <>

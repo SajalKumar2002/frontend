@@ -9,9 +9,17 @@ const TablePreview = React.memo(({ tableData }) => {
     if (!tableData || tableData.length === 0) {
         return (
             <div className="align-content-center">
-                <h5 className='text-center'>Preview of the DB will be displayed here.</h5>
+                <h5 className='text-center'>Select a table to preview the sample table.</h5>
             </div>
         );
+    }
+
+    if(!localStorage.getItem('csv-db')) {
+        return (
+            <div className="align-content-center">
+                <h5 className='text-center'>Preview of the Table will be displayed here.</h5>
+            </div>
+        )
     }
 
     return (
