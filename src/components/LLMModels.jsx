@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
-import axios from '../http';
 import { Form, Spinner } from 'react-bootstrap';
+
+import { http } from '../http';
 
 import DataSourceContext from '../context/Source.Context';
 
@@ -12,7 +13,7 @@ const LLMModels = ({ rounded, onChange, defaultValue }) => {
     )
 
     const fetchModels = async () => {
-        const response = await axios.get("/api/llm")
+        const response = await http.get("/llm")
         setLlmModels(response.data);
     }
 
@@ -42,7 +43,7 @@ const LLMModels = ({ rounded, onChange, defaultValue }) => {
             </Form.Select>
         </>
     )
-    
+
 }
 
 export default LLMModels

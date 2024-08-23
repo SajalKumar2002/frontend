@@ -1,14 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Form, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 
-import api1 from '../api1';
-import api2 from '../api2';
+import { api1, api2 } from '../http';
 
 const SQLConnectScreen = () => {
   const redirect = useNavigate();
-  // const [tables, setTables] = useState([]);
+
+  const apiCall = async (api, data) => {
+    try {
+      const response = await api.post(
+        "/set_db_config",
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+      if (response.status === 200 && response?.data?.message === "Connection established with the Database")
+        return true;
+    } catch (error) {
+      alert("Error Connecting", error?.response?.data?.error);
+    }
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -20,27 +36,9 @@ const SQLConnectScreen = () => {
       "database": event.target.database.value
     };
     try {
-
-      const responseAP1 = await api1.post(
-        "/set_db_config",
-        data,
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      )
-      const responseAP2 = await api2.post(
-        "/set_db_config",
-        data,
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      )
-
-      alert(responseAP1.data.message === responseAP2.data.message ? "Connection established with the Database" : "Connection Error");
+      if (apiCall(api1, data) && apiCall(api2, data)) {
+        alert("Connection established with Database");
+      }
     } catch (error) {
       console.log(error);
       alert("Error Connecting", error);
@@ -88,22 +86,6 @@ const SQLConnectScreen = () => {
             </Form>
           </div>
 
-          {/* {tables || tables.length > 0 ?
-            <div className=''>
-              <Form.Group className=' mb-3'>
-                <Form.Label className='col-3 my-auto'>Choose Table</Form.Label>
-                <Form.Select className='col border-dark rounded-pill'>
-                  <option>Select an option</option>
-                  {tables.map((table, index) => (
-                    <option value={table.tableName} key={index} >{table.tableName}</option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-              <TablePreview tableData={[]} />
-            </div>
-            :
-            <></>
-          } */}
         </div>
       </div>
     </div>

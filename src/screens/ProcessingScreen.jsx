@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Table } from 'react-bootstrap';
 
-import http from '../http';
+import { http } from '../http';
 
 const ProcessingScreen = () => {
   const [records, setRecords] = useState([]);
   const [result, setResult] = useState([]);
 
   const getJob = async () => {
-    const response = await http.get('/api/job')
+    const response = await http.get('/job')
     if (response.data.success) {
       setRecords(response.data.job_details)
       setResult(response.data.job_details)

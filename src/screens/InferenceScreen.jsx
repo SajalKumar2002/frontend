@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
-import api1 from '../api1';
-import api2 from '../api2';
+import { api1, api2, api3 } from '../http';
+
+import DataSourceContext from '../context/Source.Context';
 
 import { Spinner } from 'react-bootstrap';
 import SidePanel from '../components/SidePanel';
 
 const InferenceScreen = () => {
+  const { state } = useContext(DataSourceContext);
+
   const [prevChats, setPrevChats] = useState([]);
   const [promptText, setPromptText] = useState("");
   const [currentQuestion, setCurrentQuestion] = useState("");
@@ -16,28 +19,21 @@ const InferenceScreen = () => {
   const handleKeyDown = async (event) => {
     if (event.key === 'Enter') {
       setLoading(true);
-      const data = {
-        question: promptText
-      };
-      setCurrentQuestion(data);
-
       try {
-        const response = await api1.post('/generate_sql_query', data, {
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        });
 
-        const chatResponse = await handleQuery(response.data.sql_query);
-        console.log(chatResponse);
-        // setCurrentResponse({ answer: response.data.sql_query });
+        let chatResponse;
+
+        if ((state.source === 'sql' || state.source === 'csv') && state.type === 'structured') {
+          chatResponse = await structuredChat();
+        } else if (state.source === 'pdf' && state.type === 'structured') {
+          chatResponse = await unstructuredPDFChat();
+        }
+
         setCurrentResponse({ answer: chatResponse });
-
         setPrevChats(prevChat => [
           ...prevChat,
           {
-            ...data,
-            // answer: response.data.sql_query
+            question: promptText,
             answer: chatResponse
           }
         ]);
@@ -50,7 +46,7 @@ const InferenceScreen = () => {
         setPrevChats(prevChat => [
           ...prevChat,
           {
-            ...data,
+            question: promptText,
             answer: error.response?.data?.error || "An error occurred"
           }
         ]);
@@ -63,22 +59,71 @@ const InferenceScreen = () => {
     }
   }
 
-  const handleQuery = async (query) => {
-    const data = {
-      "question": promptText,
-      "sql_query": query
-    }
-    setPromptText("");
+  // unstructured (pdf) 
+  const unstructuredPDFChat = async () => {
+    try {
+      const data = {
+        query: promptText
+      };
+      setCurrentQuestion({ question: promptText });
+      const response = await api3.post('/chat',
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
 
-    const response = await api2.post("/generate_response",
-      data,
-      {
+      return response.data.answer;
+
+    } catch (error) {
+      console.log(error.response?.data?.error);
+      return null;
+    }
+  }
+
+  // structured (csv, sql)
+  const structuredChat = async () => {
+    const data = {
+      question: promptText
+    };
+    setCurrentQuestion(data);
+
+    try {
+      const response = await api1.post('/generate_sql_query', data, {
         headers: {
           'Content-Type': 'application/json',
         }
+      });
+      return await handleSQLQuery(response.data.sql_query);
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
+  const handleSQLQuery = async (query) => {
+    try {
+      const data = {
+        "question": promptText,
+        "sql_query": query
       }
-    )
-    return response.data.response;
+      setPromptText("");
+
+      const response = await api2.post("/generate_response",
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      )
+      return response.data.response;
+    } catch (error) {
+      console.log(error.response.data.error)
+      return null;
+    }
   }
 
   return (

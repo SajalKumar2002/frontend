@@ -7,30 +7,87 @@ import RadioModelButton from '../components/RadioModelButton';
 
 import { Form, Button, Collapse } from 'react-bootstrap';
 import LLMModels from '../components/LLMModels';
-import axios from '../http';
+import { http, api3 } from '../http';
 
 const ModelScreen = () => {
-  const { state, dispatch } = useContext(DataSourceContext)
+  const { state } = useContext(DataSourceContext)
   const [selectedOption, setSelectedOption] = useState("");
   const [existingSelectedModel, setExistingSelectedModel] = useState("");
   const [job, setJob] = useState();
 
+  const generateJobId = async () => {
+    try {
+      const response = await http.get("/job/generate")
+      setJob(response.data);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
+
+  const switchJobStatus = async (jobID) => {
+    try {
+      const response = await http.get(`/job/switch?id=${jobID}`);
+      setJob(response.data);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
+
+  const deleteJob = async (jobID) => {
+    try {
+      const response = await http.get(`/job/switch?id=${jobID}`);
+      setJob(response.data);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
+
+  const ingestData = async () => {
+    try {
+      const response_2 = await api3.get("/ingest");
+      console.log(response_2);
+      if (response_2?.status === 200) {
+        console.log(response_2);
+      }
+    } catch (error) {
+      alert('Error:', error.response.data.error);
+      console.log(error.response.data.error);
+    }
+  }
+
   const handleExistingSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.get("/api/job/generate")
-      if (response.data.success) {
-        setJob(response.data.job);
-      }
-      dispatch({ type: 'MODEL', payload: { model: existingSelectedModel } })
+
+      console.log("handleExistingSubmit")
+
     } catch (error) {
       console.log(error);
     }
   }
 
-  const handleNewSubmit = (event) => {
+  const handleNewSubmit = async (event) => {
     event.preventDefault();
-    console.log("handleNewModelSubmit Submitted")
+    try {
+      if (await generateJobId()) {
+        try {
+          const ingestResponse = await ingestData();
+          console.log(ingestResponse);
+          await switchJobStatus(job?.id);
+        } catch (error) {
+          console.log(error);
+          await deleteJob(job?.id);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   if (state.source === "") {
@@ -67,7 +124,7 @@ const ModelScreen = () => {
           <div className="container px-5">
             <div className="row col-5">
 
-              <Form onSubmit={handleExistingSubmit}>
+              <Form onSubmit={handleNewSubmit}>
                 <Form.Group className='row'>
                   <div className="col-9">
                     <LLMModels
@@ -77,7 +134,12 @@ const ModelScreen = () => {
                   </div>
 
                   <div className="col-3 align-content-center text-end">
-                    <Button type='submit' className="rounded-pill px-4" disabled={existingSelectedModel.length === ""} size='sm'>Train</Button>
+                    <Button
+                      type='submit'
+                      className="rounded-pill px-4"
+                      disabled={existingSelectedModel.length === ""}
+                      size='sm'
+                    >Train</Button>
                   </div>
                 </Form.Group>
 
@@ -114,7 +176,13 @@ const ModelScreen = () => {
                   <div className="container">
                     <Form onSubmit={handleNewSubmit}>
                       <Form.Group className='row mb-1'>
-                        <Form.Label className='col-7 my-auto'>Select a model for cloning(Optional)</Form.Label>
+                        <Form.Label className='col-7 my-auto'>Select a BASE MODEL</Form.Label>
+                        <div className="col p-0">
+                          <LLMModels rounded="rounded-pill" />
+                        </div>
+                      </Form.Group>
+                      <Form.Group className='row mb-1'>
+                        <Form.Label className='col-7 my-auto'>Select a EMBEDDED MODEL</Form.Label>
                         <div className="col p-0">
                           <LLMModels rounded="rounded-pill" />
                         </div>
@@ -122,14 +190,6 @@ const ModelScreen = () => {
                       <Form.Group className='row mb-1'>
                         <Form.Label className='col-7 my-auto'>Model Name</Form.Label>
                         <Form.Control className='col rounded-pill border-dark' placeholder="Model Name" />
-                      </Form.Group>
-                      <Form.Group className='row mb-1'>
-                        <Form.Label className='col-7 my-auto'>Parameter 1</Form.Label>
-                        <Form.Control className='col rounded-pill border-dark' placeholder="Parameter Value" />
-                      </Form.Group>
-                      <Form.Group className='row mb-1'>
-                        <Form.Label className='col-7 my-auto'>Parameter 2</Form.Label>
-                        <Form.Control className='col rounded-pill border-dark' placeholder="Parameter Value" />
                       </Form.Group>
                       <div className="text-end">
                         <Button type='submit'>Train</Button>

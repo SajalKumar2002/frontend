@@ -11,7 +11,7 @@ const SidePanel = () => {
         <div className="col-2 bg-history-inferenceScreen p-3 overflow-auto text-white d-flex flex-column h-custom" >
 
             <LLMModels
-            // defaultValue={state ? state.source : ""} 
+                defaultValue={state ? state.source : ""}
             />
 
             <Nav variant="pills" className='d-flex flex-column'>

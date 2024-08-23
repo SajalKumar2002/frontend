@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import http from '../http';
-import TablePreview from '../components/TablePreview.Connect';
+import { http } from '../http';
+
 import { Button, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import { Spinner } from 'react-bootstrap';
+
+import TablePreview from '../components/TablePreview.Connect';
 
 const CSVConnectScreen = () => {
     const [loading, setLoading] = useState(false);
@@ -27,15 +28,25 @@ const CSVConnectScreen = () => {
         setLoading(true);
         const formData = new FormData();
 
+        const notCSVFiles = selectedFiles.filter((file) => file.type !== "text/csv");
+
+        if (notCSVFiles.length !== 0) {
+            alert("Please select only CSV files.");
+            setLoading(false);
+            return;
+        }
+
         selectedFiles.forEach((file) => {
             formData.append(`files`, file);
         });
+
         try {
-            const response = await http.post('/api/data/csv', formData, {
+            const response = await http.post('/data/csv', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+            console.log(response);
             setSelectedFiles([]);
             setAcceptedFiles((prevAccFile) => (
                 [
@@ -43,8 +54,8 @@ const CSVConnectScreen = () => {
                     ...response?.data?.tables
                 ]
             ));
-            localStorage.setItem("csv-tables", JSON.stringify(acceptedFiles));
-            localStorage.setItem("csv-db", response?.data?.database);
+            // localStorage.setItem("csv-tables", JSON.stringify(acceptedFiles));
+            // localStorage.setItem("csv-db", response?.data?.database);
         } catch (error) {
             alert('Error:', error.response.data.error);
             console.log(error.response.data.error);

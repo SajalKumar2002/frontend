@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import axios from '../http';
+import { http } from '../http';
 
 import DataSourceContext from '../context/Source.Context';
 
@@ -16,7 +16,7 @@ const NavBar = () => {
 
   const checkUser = async () => {
     try {
-      const response = await axios.get("/api/user/check");
+      const response = await http.get("/user/check");
       if (response.status !== 200) {
         throw new Error("User Not verified")
       }
@@ -33,7 +33,7 @@ const NavBar = () => {
   const handleLogOut = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.get("/api/user/logout");
+      const response = await http.get("/user/logout");
       if (response.status === 200) {
         dispatch({ type: "CLEAR" })
         navigate('/');
