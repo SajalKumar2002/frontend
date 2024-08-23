@@ -2,8 +2,8 @@ import axios from 'axios'
 
 // login form, llmmodel, navbar,
 export const http = axios.create({
-  // baseURL: "http://15.206.74.44:5000",
-  baseURL: "http://localhost:5000/api",
+  baseURL: "http://15.206.74.44:5000",
+  // baseURL: "http://localhost:5000/api",
   withCredentials: true,
 })
 
