@@ -124,7 +124,7 @@ const InferenceScreen = () => {
       return response.data.response;
     } catch (error) {
       console.log(error.response.data.error)
-      return null;
+      return error.response.data.error;
     }
   }
 
