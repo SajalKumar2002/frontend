@@ -49,7 +49,7 @@ const SQLConnectScreen = () => {
     <div style={{ height: "38rem" }}>
       <div className='d-flex justify-content-between px-4 py-2'>
         <Button variant='primary' onClick={() => redirect('/data')}>{"<"}Back</Button>
-        <Button variant='primary' onClick={() => redirect('/model')}>Next{">"}</Button>
+        <Button variant='primary' onClick={() => redirect('/inference')}>Next{">"}</Button>
       </div>
       <div className='container mt-2'  >
         <div className='row mt-2'>
@@ -79,7 +79,7 @@ const SQLConnectScreen = () => {
               </Form.Group>
               <div className='row justify-content-end'>
                 <div className="text-center">
-                  <Button variant="info" className='me-2 text-white' onClick={() => redirect('/data/sql')}>Reset</Button>
+                  <Button variant="info" className='me-2 text-white' type='reset'>Reset</Button>
                   <Button variant="info" className='ms-2 text-white' type='submit'>Connect</Button>
                 </div>
               </div>

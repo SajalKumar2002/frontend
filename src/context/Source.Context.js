@@ -7,6 +7,7 @@ function reducer(state, action) {
         case "SOURCE":
             localStorage.setItem('source', action.payload.source)
             localStorage.setItem('type', action.payload.type)
+            localStorage.removeItem('chat');
             return {
                 ...state,
                 source: action.payload.source,
