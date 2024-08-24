@@ -14,7 +14,7 @@ export const api1 = axios.create({
 
 // CSV, SQL - Structured (Connect, Chat)
 export const api2 = axios.create({
-  baseURL: "https://1c79-34-80-18-67.ngrok-free.app"
+  baseURL: "https://0fba-34-80-18-67.ngrok-free.app"
 })
 
 // PDF - Unstructured (Connect, Chat)

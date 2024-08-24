@@ -87,8 +87,7 @@ const NavBar = () => {
             <p className='d-inline me-5'>Account</p>
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <Dropdown.Item >Action 1</Dropdown.Item>
-            <Dropdown.Divider />
+            {/* <Dropdown.Divider /> */}
             <Dropdown.Item onClick={handleLogOut}>Log Out</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
