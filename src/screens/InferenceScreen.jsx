@@ -4,8 +4,10 @@ import { api1, api2, api3 } from '../http';
 
 import DataSourceContext from '../context/Source.Context';
 
-import { Spinner } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 import SidePanel from '../components/SidePanel';
+
+import StopBtn from '../svg/StopBtn.svg';
 
 const InferenceScreen = () => {
   const { state } = useContext(DataSourceContext);
@@ -199,7 +201,7 @@ const InferenceScreen = () => {
             </div>
 
             {/* PROMPT BAR */}
-            <div className="w-75 text-center mx-auto pb-4">
+            <div className="w-75 mx-auto mb-4 d-flex">
               <input
                 type='text'
                 className='w-100 rounded-pill border-0 bg-dark text-light py-3 px-4'
@@ -208,6 +210,9 @@ const InferenceScreen = () => {
                 onChange={(e) => setPromptText(e.target.value)}
                 onKeyDown={handleKeyDown}
               />
+              {/* <Button type="button" variant='none' className='p-0 position-absolute'>
+                <img src={StopBtn} alt='STOP' className='' width="35" />
+              </Button> */}
             </div>
 
           </div>

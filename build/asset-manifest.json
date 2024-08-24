@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.31dee5a1.css",
-    "main.js": "/static/js/main.d25df154.js",
+    "main.js": "/static/js/main.f953ed67.js",
     "static/media/S3Bucket.svg": "/static/media/S3Bucket.a1c1276e81e227caf71dd4b8326cff8b.svg",
     "static/media/hero-image.svg": "/static/media/hero-image.34734587f0710d0634bb.svg",
     "static/media/AI-Models.svg": "/static/media/AI-Models.9af6fc48ca6c292c2c787570fd6be823.svg",
@@ -11,13 +11,14 @@
     "static/media/Brandlogo.svg": "/static/media/Brandlogo.e8fb3293b0b5d446865ae4e4c8b4ea1f.svg",
     "static/media/VideoCamera.svg": "/static/media/VideoCamera.e90257ba317bddaaa961f73409f42d5b.svg",
     "static/media/OwnModel.svg": "/static/media/OwnModel.ec5abd0b9d7ffdb1655dcbb6b21c148e.svg",
+    "static/media/StopBtn.svg": "/static/media/StopBtn.a291acb8e28b9b5fa59127f364c595a6.svg",
     "static/media/FileIcon.svg": "/static/media/FileIcon.f7672192e4a713da4e9e52c3640612b8.svg",
     "index.html": "/index.html",
     "main.31dee5a1.css.map": "/static/css/main.31dee5a1.css.map",
-    "main.d25df154.js.map": "/static/js/main.d25df154.js.map"
+    "main.f953ed67.js.map": "/static/js/main.f953ed67.js.map"
   },
   "entrypoints": [
     "static/css/main.31dee5a1.css",
-    "static/js/main.d25df154.js"
+    "static/js/main.f953ed67.js"
   ]
 }
