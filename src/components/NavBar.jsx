@@ -26,9 +26,9 @@ const NavBar = () => {
     }
   };
 
-  useEffect(() => {
-    checkUser();
-  }, [navigate])
+  // useEffect(() => {
+  //   checkUser();
+  // }, [navigate])
 
   const handleLogOut = async (event) => {
     event.preventDefault();

@@ -109,7 +109,7 @@ const InferenceScreen = () => {
           'Content-Type': 'application/json',
         }
       });
-      return await handleSQLQuery(response.data.sql_query);
+      return await handleSQLQuery(response.data?.sql_query);
     } catch (error) {
       console.log(error);
       return null;
