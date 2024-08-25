@@ -60,8 +60,9 @@ const CSVConnectScreen = () => {
             localStorage.setItem("csv-db", response.data.database);
             alert("File Uploaded Successfully");
         } catch (error) {
-            alert('Error:', error.response.data.error);
-            console.log(error.response.data.error);
+            const errorMessage = error.response?.data?.error || "Database connection failed"
+            alert('Error:', errorMessage);
+            console.log(error);
         } finally {
             setLoading(false);
         }

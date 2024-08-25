@@ -24,7 +24,7 @@ import ModelScreen from './screens/ModelScreen';
 import InferenceScreen from './screens/InferenceScreen';
 
 function App() {
-
+  
   return (
     <Router>
       <Routes>

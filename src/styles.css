@@ -36,15 +36,15 @@
     width: 100%;
 }
 
-.fs-custom-jobid{
+.fs-custom-jobid {
     font-size: 0.75rem;
 }
 
-.h-custom{
-    height: calc(100vh - 75px );
+.h-custom {
+    height: calc(100vh - 75px);
 }
 
-.scrollbar-hide::-webkit-scrollbar{
+.scrollbar-hide::-webkit-scrollbar {
     display: none;
 }
 
@@ -52,6 +52,7 @@
     border-style: dashed;
 }
 
-.prompt-btn{
-    
+.prompt-bar-btn {
+    position: absolute;
+    right: 0;
 }

@@ -8,6 +8,7 @@ import { Button, Spinner } from 'react-bootstrap';
 import SidePanel from '../components/SidePanel';
 
 import StopBtn from '../svg/StopBtn.svg';
+import StartBtn from '../svg/StartBtn.svg';
 
 const InferenceScreen = () => {
   const { state } = useContext(DataSourceContext);
@@ -22,44 +23,52 @@ const InferenceScreen = () => {
 
   const handleKeyDown = async (event) => {
     if (event.key === 'Enter') {
-      setLoading(true);
-      try {
+      chatRouting();
+    }
+  }
 
-        let chatResponse;
+  // const stopChatRouting = async () => {
+  //   setLoading(false);
+  // }
 
-        if ((state.source === 'sql' || state.source === 'csv') && state.type === 'structured') {
-          chatResponse = await structuredChat();
-        } else if (state.source === 'pdf' && state.type === 'structured') {
-          chatResponse = await unstructuredPDFChat();
-        }
+  const chatRouting = async () => {
+    setLoading(true);
+    try {
 
-        setCurrentResponse({ answer: chatResponse });
-        setPrevChats(prevChat => [
-          ...prevChat,
-          {
-            question: promptText,
-            answer: chatResponse
-          }
-        ]);
+      let chatResponse;
 
-        setCurrentQuestion("");
-        setCurrentResponse("");
-      } catch (error) {
-        console.log(error);
-        setCurrentResponse({ answer: error.response?.data?.error || "An error occurred" });
-        setPrevChats(prevChat => [
-          ...prevChat,
-          {
-            question: promptText,
-            answer: error.response?.data?.error || "An error occurred"
-          }
-        ]);
-
-        setCurrentQuestion("");
-        setCurrentResponse("");
-      } finally {
-        setLoading(false);
+      if ((state.source === 'sql' || state.source === 'csv') && state.type === 'structured') {
+        chatResponse = await structuredChat();
+      } else if (state.source === 'pdf' && state.type === 'structured') {
+        chatResponse = await unstructuredPDFChat();
       }
+
+      setCurrentResponse({ answer: chatResponse });
+      setPrevChats(prevChat => [
+        ...prevChat,
+        {
+          question: promptText,
+          answer: chatResponse
+        }
+      ]);
+
+      setCurrentQuestion("");
+      setCurrentResponse("");
+    } catch (error) {
+      console.log(error);
+      setCurrentResponse({ answer: error.response?.data?.error || "An error occurred" });
+      setPrevChats(prevChat => [
+        ...prevChat,
+        {
+          question: promptText,
+          answer: error.response?.data?.error || "An error occurred"
+        }
+      ]);
+
+      setCurrentQuestion("");
+      setCurrentResponse("");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -196,12 +205,11 @@ const InferenceScreen = () => {
                     }
                   </div>
                 </div>
-
               </div>
             </div>
 
             {/* PROMPT BAR */}
-            <div className="w-75 mx-auto mb-4 d-flex">
+            <div className="w-75 mx-auto mb-4 d-flex position-relative">
               <input
                 type='text'
                 className='w-100 rounded-pill border-0 bg-dark text-light py-3 px-4'
@@ -210,9 +218,16 @@ const InferenceScreen = () => {
                 onChange={(e) => setPromptText(e.target.value)}
                 onKeyDown={handleKeyDown}
               />
-              {/* <Button type="button" variant='none' className='p-0 position-absolute'>
-                <img src={StopBtn} alt='STOP' className='' width="35" />
-              </Button> */}
+              {loading ?
+                // <Button type="button" variant='none' onClick={stopChatRouting} className='prompt-bar-btn my-1'>
+                //   <img src={StopBtn} alt='STOP' className='' width="35" />
+                // </Button>
+                <></>
+                :
+                <Button type="button" variant='none' disabled={promptText.length === 0} onClick={chatRouting} className='prompt-bar-btn my-1'>
+                  <img src={StartBtn} alt='STOP' className='' width="35" />
+                </Button>
+              }
             </div>
 
           </div>
