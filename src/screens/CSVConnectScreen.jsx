@@ -62,7 +62,7 @@ const CSVConnectScreen = () => {
         } catch (error) {
             const errorMessage = error.response?.data?.error || error.data?.error || "Database connection failed"
             alert('Error:', errorMessage);
-            console.log(error?.vt);
+            console.log(error);
         } finally {
             setLoading(false);
         }
