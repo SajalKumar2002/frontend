@@ -44,8 +44,7 @@ const CSVConnectScreen = () => {
         });
 
         try {
-            const query = localStorage.getItem('csv-db') ? "?database=" + localStorage.getItem('csv-db') : "";
-            const response = await http.post(`/data/csv/${query}`, formData, {
+            const response = await http.post("/data/csv", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -57,7 +56,6 @@ const CSVConnectScreen = () => {
                     ...response?.data?.tables
                 ]
             ));
-            localStorage.setItem("csv-db", response.data.database);
             alert("File Uploaded Successfully");
         } catch (error) {
             const errorMessage = error.response?.data?.error || error.data?.error || "Database connection failed"
