@@ -9,12 +9,12 @@ export const http = axios.create({
 
 // CSV, SQL - Structured (Connect, Chat)
 export const api1 = axios.create({
-  baseURL: "https://e66b-34-16-209-104.ngrok-free.app"
+  baseURL: "https://2ab9-35-233-200-211.ngrok-free.app" 
 })
 
 // CSV, SQL - Structured (Connect, Chat)
 export const api2 = axios.create({
-  baseURL: "https://24ab-34-73-247-102.ngrok-free.app"
+  baseURL: "https://d730-34-28-166-105.ngrok-free.app"
 })
 
 // PDF - Unstructured (Connect, Chat)
