@@ -35,25 +35,13 @@ const InferenceScreen = () => {
     setLoading(true);
     try {
 
-      let chatResponse;
-
       if ((state.source === 'sql' || state.source === 'csv') && state.type === 'structured') {
-        chatResponse = await structuredChat();
+        await structuredChat();
       } else if (state.source === 'pdf' && state.type === 'structured') {
-        chatResponse = await unstructuredPDFChat();
+        await unstructuredPDFChat();
       }
 
-      setCurrentResponse({ answer: chatResponse });
-      setPrevChats(prevChat => [
-        ...prevChat,
-        {
-          question: promptText,
-          answer: chatResponse
-        }
-      ]);
-
-      setCurrentQuestion("");
-      setCurrentResponse("");
+      
     } catch (error) {
       console.log(error);
       setCurrentResponse({ answer: error.response?.data?.error || "An error occurred" });
@@ -111,8 +99,18 @@ const InferenceScreen = () => {
       });
       return await handleSQLQuery(response.data?.sql_query);
     } catch (error) {
-      console.log(error);
-      return null;
+      setCurrentResponse({ answer: error.response?.data?.error || "An error occurred" });
+      setPrevChats(prevChat => [
+        ...prevChat,
+        {
+          question: promptText,
+          answer: error.response?.data?.error || "An error occurred"
+        }
+      ]);
+
+      setCurrentQuestion("");
+      setCurrentResponse("");
+      return;
     }
   }
 
@@ -132,7 +130,18 @@ const InferenceScreen = () => {
           }
         }
       )
-      return response.data.response;
+      
+      setCurrentResponse({ answer: response.data.response });
+      setPrevChats(prevChat => [
+        ...prevChat,
+        {
+          question: promptText,
+          answer: response.data.response
+        }
+      ]);
+
+      setCurrentQuestion("");
+      setCurrentResponse("");
     } catch (error) {
       console.log(error.response.data.error)
       return error.response.data.error;

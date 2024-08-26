@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
+
+import DataSourceContext from '../context/Source.Context';
 
 import { http } from '../http';
 
 function LoginForm() {
     const redirect = useNavigate();
+    const { dispatch } = useContext(DataSourceContext);
 
     const HandleSubmit = async (event) => {
         event.preventDefault();
@@ -14,6 +17,7 @@ function LoginForm() {
             password: event.target.password.value
         })
         if (response.data.success) {
+            dispatch({ type: "CLEAR" })
             alert(response.data.message)
             redirect("/data");
         } else {
