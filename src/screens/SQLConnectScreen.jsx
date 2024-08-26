@@ -22,7 +22,9 @@ const SQLConnectScreen = () => {
       if (response.status === 200 && response?.data?.message === "Connection established with the Database")
         return true;
     } catch (error) {
-      alert("Error Connecting", error?.response?.data?.error);
+      const errorMessage = error.response?.data?.error || "Server Error";
+      alert(`Error: ${errorMessage}`);
+      console.log(error);
     }
   }
 
@@ -41,7 +43,8 @@ const SQLConnectScreen = () => {
       }
     } catch (error) {
       console.log(error);
-      alert("Error Connecting", error);
+      const errorMessage = error.response?.data?.error || "Server Error";
+      alert(`Error: ${errorMessage}`);
     }
   }
 

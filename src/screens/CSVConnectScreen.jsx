@@ -58,9 +58,9 @@ const CSVConnectScreen = () => {
             ));
             alert("File Uploaded Successfully");
         } catch (error) {
-            const errorMessage = error.response?.data?.error || error.data?.error || "Database connection failed"
-            alert('Error:', errorMessage);
-            console.log(error);
+            const errorMessage = error.response?.data?.error || "Server Error";
+            alert(`Error: ${errorMessage}`);
+            console.log(errorMessage);
         } finally {
             setLoading(false);
         }

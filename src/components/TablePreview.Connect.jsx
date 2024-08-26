@@ -14,14 +14,6 @@ const TablePreview = React.memo(({ tableData }) => {
         );
     }
 
-    if(!localStorage.getItem('csv-db')) {
-        return (
-            <div className="align-content-center">
-                <h5 className='text-center'>Preview of the Table will be displayed here.</h5>
-            </div>
-        )
-    }
-
     return (
         <div className='border border-dark border-1 rounded-3 p-3'>
             <div className='container overflow-auto'>
