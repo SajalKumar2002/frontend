@@ -18,11 +18,11 @@ const CSVConnectScreen = () => {
     const [selectedFileIndex, setSelectedFileIndex] = useState();
 
     const handleFileChange = (event) => {
-        if (selectedFiles.length <= 5) {
+        if ((selectedFiles.length + acceptedFiles.length) >= 5) {
+            alert("You can upload only 5 Files!");
+        } else {
             const filesArray = Array.from(event.target.files);
             setSelectedFiles((prevFiles) => [...prevFiles, ...filesArray]);
-        } else {
-            alert("Limit exceeded")
         }
     };
 
@@ -44,7 +44,8 @@ const CSVConnectScreen = () => {
         });
 
         try {
-            const response = await http.post("/data/csv", formData, {
+            const db_name = localStorage.getItem('csv-db') ? "?database=" + localStorage.getItem('csv-db') : "";
+            const response = await http.post(`/data/csv/${db_name}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -56,6 +57,7 @@ const CSVConnectScreen = () => {
                     ...response?.data?.tables
                 ]
             ));
+            localStorage.setItem('csv-db', response.data?.database)
             alert("File Uploaded Successfully");
         } catch (error) {
             const errorMessage = error.response?.data?.error || "Server Error";
