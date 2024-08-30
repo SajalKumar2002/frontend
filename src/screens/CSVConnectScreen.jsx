@@ -1,159 +1,182 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { http } from '../http';
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { http } from "../http";
 
-import { Button, Form } from 'react-bootstrap';
-import { Spinner } from 'react-bootstrap';
+import { Button, Form, Spinner } from "react-bootstrap";
 
-import TablePreview from '../components/TablePreview.Connect';
+import TablePreview from "../components/TablePreview.Connect";
 
 const CSVConnectScreen = () => {
-    const redirect = useNavigate();
+  const redirect = useNavigate();
 
-    const [loading, setLoading] = useState(false);
-    const [selectedFiles, setSelectedFiles] = useState([]);
-    const [acceptedFiles, setAcceptedFiles] = useState(
-        localStorage.getItem('csv-table') ? JSON.parse(localStorage.getItem('csv-table')) : []
-    ); //Updated Files
-    const [selectedFileIndex, setSelectedFileIndex] = useState();
+  const [loading, setLoading] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [acceptedFiles, setAcceptedFiles] = useState(
+    localStorage.getItem("csv-table")
+      ? JSON.parse(localStorage.getItem("csv-table"))
+      : []
+  ); //Updated Files
+  const [selectedFileIndex, setSelectedFileIndex] = useState();
 
-    const handleFileChange = (event) => {
-        if ((selectedFiles.length + acceptedFiles.length) >= 5) {
-            alert("You can upload only 5 Files!");
-        } else {
-            const filesArray = Array.from(event.target.files);
-            setSelectedFiles((prevFiles) => [...prevFiles, ...filesArray]);
-        }
-    };
+  const handleFileChange = (event) => {
+    if (selectedFiles.length + acceptedFiles.length >= 5) {
+      alert("You can upload only 5 Files!");
+    } else {
+      const filesArray = Array.from(event.target.files);
+      setSelectedFiles((prevFiles) => [...prevFiles, ...filesArray]);
+    }
+  };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        setLoading(true);
-        const formData = new FormData();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    const formData = new FormData();
 
-        const notCSVFiles = selectedFiles.filter((file) => file.type !== "text/csv");
+    const notCSVFiles = selectedFiles.filter(
+      (file) => file.type !== "text/csv"
+    );
 
-        if (notCSVFiles.length !== 0) {
-            alert("Please select only CSV files.");
-            setLoading(false);
-            return;
-        }
-
-        selectedFiles.forEach((file) => {
-            formData.append(`files`, file);
-        });
-
-        try {
-            const db_name = localStorage.getItem('csv-db') ? "?database=" + localStorage.getItem('csv-db') : "";
-            const response = await http.post(`/data/csv/${db_name}`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            setSelectedFiles([]);
-            setAcceptedFiles((prevAccFile) => (
-                [
-                    ...prevAccFile,
-                    ...response?.data?.tables
-                ]
-            ));
-            localStorage.setItem('csv-db', response.data?.database)
-            alert("File Uploaded Successfully");
-        } catch (error) {
-            const errorMessage = error.response?.data?.error || "Server Error";
-            alert(`Error: ${errorMessage}`);
-            console.log(errorMessage);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleRemove = async (file) => {
-        setSelectedFiles(
-            selectedFiles.filter((selectedFile) => (
-                file.name.includes(selectedFile.name) ? null : file
-            ))
-        )
+    if (notCSVFiles.length !== 0) {
+      alert("Please select only CSV files.");
+      setLoading(false);
+      return;
     }
 
-    useEffect(() => {
-        localStorage.setItem('csv-table', JSON.stringify(acceptedFiles));
-    }, [acceptedFiles])
+    selectedFiles.forEach((file) => {
+      formData.append(`files`, file);
+    });
 
-    return (
-        <>
-            <div className='d-flex justify-content-between px-4 py-2'>
-                <Button variant='primary' onClick={() => redirect('/data')}>{"<"}Back</Button>
-                <Button variant='primary' onClick={() => redirect('/inference')}>Next{">"}</Button>
-            </div>
-            <div className='container mt-5'>
-                <div className='row'>
-                    <div className='col-7 p-2'>
-                        <h3 className='mb-4'>
-                            <span className='text-decoration-underline link-offset-1'>Upload XLS/CSV Files</span>
-                        </h3>
-                        <form onSubmit={handleSubmit}>
-                            <section className='container'>
-                                <div className='p-3 border-1 mb-3'>
-                                    <input type='file' multiple onChange={handleFileChange} accept=".csv" />
-                                    <p>Files to Upload</p>
-                                    <ol>
-                                        {selectedFiles.map((file, index) => (
-                                            <div key={index} className='row mb-1'>
-                                                <div className="col-3 align-content-center">
-                                                    <li>{file.name}</li>
-                                                </div>
-                                                <div className="col-3">
-                                                    <Link onClick={() => handleRemove(file)} className='btn btn-sm'>Remove</Link>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </ol>
-                                    <p>Uploaded Files</p>
-                                    {loading ?
-                                        <div>
-                                            <Spinner animation="border" role="status">
-                                                <span className="visually-hidden">Loading...</span>
-                                            </Spinner>
-                                        </div>
-                                        :
-                                        <ol>
-                                            {acceptedFiles.map((file, index) => (
-                                                <li key={index}>{file.name}</li>
-                                            ))}
-                                        </ol>
-                                    }
-                                </div>
-                            </section>
-                            <div className='container d-flex justify-content-around'>
-                                <Button type='submit' className={`btn btn-primary ${selectedFiles.length === 0 ? 'disabled' : ''}`}>Upload</Button>
-                                <Link to='/inference' className='btn'>Go to inference</Link>
-                            </div>
+    try {
+      const db_name = localStorage.getItem("csv-db")
+        ? "?database=" + localStorage.getItem("csv-db")
+        : "";
+      const response = await http.post(`/data/csv/${db_name}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      setSelectedFiles([]);
+      setAcceptedFiles((prevAccFile) => [
+        ...prevAccFile,
+        ...response?.data?.tables,
+      ]);
+      localStorage.setItem("csv-db", response.data?.database);
+      alert("File Uploaded Successfully");
+    } catch (error) {
+      const errorMessage = error.response?.data?.error || "Server Error";
+      alert(`Error: ${errorMessage}`);
+      console.log(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-                        </form>
-                    </div>
-
-                    <div className='mt-5'>
-                        <div className='container mb-4'>
-                            <Form.Group className='row w-50'>
-                                <Form.Label className='col-3 m-auto'>Select Table</Form.Label>
-                                <Form.Select className='border-dark rounded-pill col' onChange={(e) => setSelectedFileIndex(e.target?.value)}>
-                                    <option>Select a Table</option>
-                                    {acceptedFiles.map((file, index) => (
-                                        <option key={index} value={index}>{file.name}</option>
-                                    ))}
-                                </Form.Select>
-                            </Form.Group>
-                        </div>
-                        {acceptedFiles.length > 0 && selectedFileIndex !== undefined ?
-                            <TablePreview tableData={acceptedFiles[selectedFileIndex]?.table} />
-                            : ""
-                        }
-                    </div>
-                </div>
-            </div>
-        </>
+  const handleRemove = async (file) => {
+    setSelectedFiles(
+      selectedFiles.filter((selectedFile) =>
+        file.name.includes(selectedFile.name) ? null : file
+      )
     );
+  };
+
+  useEffect(() => {
+    localStorage.setItem("csv-table", JSON.stringify(acceptedFiles));
+  }, [acceptedFiles]);
+
+  return (
+    <div className="container main-content scrollbar-hide ">
+      <div className="row">
+        <div className="col-7 p-2">
+          <h3 className="mb-4">
+            <span className="text-decoration-underline link-offset-1">
+              Upload XLS/CSV Files
+            </span>
+          </h3>
+          <form onSubmit={handleSubmit}>
+            <section className="container">
+              <div className="p-3 border-1 mb-3">
+                <input
+                  type="file"
+                  multiple
+                  onChange={handleFileChange}
+                  accept=".csv"
+                />
+                <p>Files to Upload</p>
+                <ol>
+                  {selectedFiles.map((file, index) => (
+                    <div key={index} className="row mb-1">
+                      <div className="col-3 align-content-center">
+                        <li>{file.name}</li>
+                      </div>
+                      <div className="col-3">
+                        <Link
+                          onClick={() => handleRemove(file)}
+                          className="btn btn-sm"
+                        >
+                          Remove
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </ol>
+                <p>Uploaded Files</p>
+                {loading ? (
+                  <div>
+                    <Spinner animation="border" role="status">
+                      <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                  </div>
+                ) : (
+                  <ol>
+                    {acceptedFiles.map((file, index) => (
+                      <li key={index}>{file.name}</li>
+                    ))}
+                  </ol>
+                )}
+              </div>
+            </section>
+            <div className="container d-flex justify-content-around">
+              <Button
+                type="submit"
+                className={`btn btn-primary ${
+                  selectedFiles.length === 0 ? "disabled" : ""
+                }`}
+              >
+                Upload
+              </Button>
+              <Link to="/inference" className="btn">
+                Go to inference
+              </Link>
+            </div>
+          </form>
+        </div>
+
+        <div className="mt-5">
+          <div className="container mb-4">
+            <Form.Group className="row w-50">
+              <Form.Label className="col-3 m-auto">Select Table</Form.Label>
+              <Form.Select
+                className="border-dark rounded-pill col"
+                onChange={(e) => setSelectedFileIndex(e.target?.value)}
+              >
+                <option>Select a Table</option>
+                {acceptedFiles.map((file, index) => (
+                  <option key={index} value={index}>
+                    {file.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </div>
+          {acceptedFiles.length > 0 && selectedFileIndex !== undefined ? (
+            <TablePreview tableData={acceptedFiles[selectedFileIndex]?.table} />
+          ) : (
+            ""
+          )}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default CSVConnectScreen;

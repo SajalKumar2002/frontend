@@ -1,12 +1,12 @@
-import React, {  useContext } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { http } from '../http';
+import React, { useContext, useEffect } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { http } from "../http";
 
-import DataSourceContext from '../context/Source.Context';
+import DataSourceContext from "../context/Source.Context";
 
-import { Navbar, Nav, Dropdown } from 'react-bootstrap';
+import { Navbar, Nav, Dropdown } from "react-bootstrap";
 
-import Brandlogo from '../svg/Brandlogo.svg';
+import Brandlogo from "../svg/Brandlogo.svg";
 
 const NavBar = () => {
   const { state, dispatch } = useContext(DataSourceContext);
@@ -18,25 +18,25 @@ const NavBar = () => {
     try {
       const response = await http.get("/user/check");
       if (response.status !== 200) {
-        throw new Error("User Not verified")
+        throw new Error("User Not verified");
       }
     } catch (error) {
       console.log(error);
-      navigate('/');
+      navigate("/");
     }
   };
 
-  // useEffect(() => {
-  //   checkUser();
-  // }, [navigate])
+  useEffect(() => {
+    checkUser();
+  }, [navigate]);
 
   const handleLogOut = async (event) => {
     event.preventDefault();
     try {
       const response = await http.get("/user/logout");
       if (response.status === 200) {
-        dispatch({ type: "CLEAR" })
-        navigate('/');
+        dispatch({ type: "CLEAR" });
+        navigate("/");
       }
     } catch (error) {
       console.error("Error logging out", error);
@@ -44,59 +44,66 @@ const NavBar = () => {
   };
 
   const getActiveKey = (pathname) => {
-    const segments = pathname.split('/');
-    return (`/${segments[1]}`)
+    const segments = pathname.split("/");
+    return `/${segments[1]}`;
   };
 
-  const activePath = getActiveKey(location.pathname)
+  const activePath = getActiveKey(location.pathname);
 
   return (
     <>
-      <Navbar className="border-bottom p-0">
-        <div className='container ms-4'>
-
+      <Navbar className="border-bottom p-0 position-relative cstm-navbar">
+        <div className="container ms-4">
           <Navbar.Brand href="/">
-            <img src={Brandlogo} alt='LLMBOXX' className='Brand-logo' />
+            <img src={Brandlogo} alt="LLMBOXX" className="brand-logo" />
           </Navbar.Brand>
 
           <Nav variant="tabs" activeKey={activePath}>
             <Nav.Item>
-              <Nav.Link href="/data" className={`border-3 text-uppercase`}>DATA</Nav.Link>
+              <Nav.Link href="/data" className={`border-3 text-uppercase`}>
+                DATA
+              </Nav.Link>
             </Nav.Item>
-            {state.type === 'structured' ?
+            {state.type === "structured" ? (
               <></>
-              :
+            ) : (
               <>
                 <Nav.Item>
-                  <Nav.Link href="/model" className={`border-3 text-uppercase`}>MODEL</Nav.Link>
+                  <Nav.Link href="/model" className={`border-3 text-uppercase`}>
+                    MODEL
+                  </Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link href="/processing" className={`border-3 text-uppercase`}>PROCESSING</Nav.Link>
+                  <Nav.Link
+                    href="/processing"
+                    className={`border-3 text-uppercase`}
+                  >
+                    PROCESSING
+                  </Nav.Link>
                 </Nav.Item>
               </>
-            }
+            )}
             <Nav.Item>
-              <Nav.Link href="/inference" className={`border-3 text-uppercase`}>INFERENCE</Nav.Link>
+              <Nav.Link href="/inference" className={`border-3 text-uppercase`}>
+                INFERENCE
+              </Nav.Link>
             </Nav.Item>
           </Nav>
-
         </div>
 
-        <Dropdown className='me-5'>
-          <Dropdown.Toggle variant='none' id="dropdown-basic" className=''>
-            <p className='d-inline me-5'>Account</p>
+        <Dropdown className="me-5">
+          <Dropdown.Toggle variant="none" id="dropdown-basic" className="">
+            <p className="d-inline me-5">Account</p>
           </Dropdown.Toggle>
           <Dropdown.Menu>
             {/* <Dropdown.Divider /> */}
             <Dropdown.Item onClick={handleLogOut}>Log Out</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-
       </Navbar>
-
       <Outlet />
     </>
-  )
-}
+  );
+};
 
 export default NavBar;
