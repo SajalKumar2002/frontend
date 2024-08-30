@@ -19,6 +19,13 @@ const PDFConnectScreen = () => {
     setLoading(true);
     const formData = new FormData();
 
+    const pdfFiles = selectedFile?.type === "test/pdf";
+
+    if (pdfFiles) {
+      alert("Please select only pdf files");
+      return;
+    }
+
     formData.append(`files`, selectedFile);
 
     try {
