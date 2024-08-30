@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { api3, http } from "../http";
@@ -14,15 +14,20 @@ const PDFConnectScreen = () => {
 
   const handleFileChange = (event) => setSelectedFile(event.target.files[0]);
 
+  useEffect(() => {
+    console.log(selectedFile);
+  }, [selectedFile])
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
     const formData = new FormData();
 
-    const pdfFiles = selectedFile?.type === "test/pdf";
+    const pdfFiles = selectedFile?.type === "application/pdf";
 
-    if (pdfFiles) {
+    if (!pdfFiles) {
       alert("Please select only pdf files");
+      setLoading(false);
       return;
     }
 

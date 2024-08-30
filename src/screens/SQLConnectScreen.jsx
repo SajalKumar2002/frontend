@@ -3,29 +3,10 @@ import React from "react";
 import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-import { api1, api2 } from "../http";
+import { http } from "../http";
 
 const SQLConnectScreen = () => {
   const redirect = useNavigate();
-
-  const apiCall = async (api, data) => {
-    try {
-      const response = await api.post("/set_db_config", data, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (
-        response.status === 200 &&
-        response?.data?.message === "Connection established with the Database"
-      )
-        return true;
-    } catch (error) {
-      const errorMessage = error.response?.data?.error || "Server Error";
-      alert(`Error: ${errorMessage}`);
-      console.log(error);
-    }
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -37,9 +18,8 @@ const SQLConnectScreen = () => {
       database: event.target.database.value,
     };
     try {
-      if (apiCall(api1, data) && apiCall(api2, data)) {
-        alert("Connection established with Database");
-      }
+      const resposne = await http.post("/data/sql", data);
+      alert(resposne.data?.message);
     } catch (error) {
       console.log(error);
       const errorMessage = error.response?.data?.error || "Server Error";
