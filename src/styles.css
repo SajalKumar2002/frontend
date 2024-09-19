@@ -13,8 +13,6 @@ body {
     background-size: cover;
 }
 
-
-
 .infernce-screen {
     height: calc(100vh - 75px);
 }

@@ -74,11 +74,33 @@ const InferenceScreen = () => {
           "Content-Type": "application/json",
         },
       });
-
-      return response.data.answer;
+      setCurrentResponse({ answer: response.data.response });
+      setPrevChats((prevChat) => [
+        ...prevChat,
+        {
+          question: promptText,
+          answer: response?.data?.response,
+        },
+      ]);
+      
+      setPromptText("");
+      setCurrentQuestion("");
+      setCurrentResponse("");
     } catch (error) {
-      console.log(error.response?.data?.error);
-      return null;
+      setCurrentResponse({
+        answer: error.response?.data?.error || "An error occurred",
+      });
+      setPrevChats((prevChat) => [
+        ...prevChat,
+        {
+          question: promptText,
+          answer: error.response?.data?.error || "An error occurred",
+        },
+      ]);
+
+      setCurrentQuestion("");
+      setCurrentResponse("");
+      return;
     }
   };
 
